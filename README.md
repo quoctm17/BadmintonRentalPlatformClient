@@ -43,7 +43,7 @@ The Badminton Court Booking Platform frontend is designed to provide an intuitiv
     - Create a `appsettings.Development.json` file and add your backend API URL:
       ```json
       {
-        "ApiUrl": "http://localhost:5135"
+        "ApiUrl": "http://localhost:5142"
       }
       ```
     - Run the frontend server:
@@ -52,7 +52,7 @@ The Badminton Court Booking Platform frontend is designed to provide an intuitiv
       ```
 
 ## 📖 Usage
-1. Open your browser and navigate to `http://localhost:5142`.
+1. Open your browser and navigate to `http://localhost:5135`.
 2. Register a new account or log in with existing credentials.
 3. View available badminton courts and book your preferred time slots.
 4. Manage your bookings from your user dashboard.
