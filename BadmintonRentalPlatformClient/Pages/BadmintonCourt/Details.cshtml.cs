@@ -5,8 +5,12 @@ namespace BadmintonRentalPlatformClient.Pages.BadmintonCourt
 {
     public class DetailsModel : PageModel
     {
-        public void OnGet()
+        public int Id { get; set; }
+        public string BadmintonCourtName { get; set; }
+
+        public void OnGet(int id)
         {
+            Id = id;
         }
     }
 }
