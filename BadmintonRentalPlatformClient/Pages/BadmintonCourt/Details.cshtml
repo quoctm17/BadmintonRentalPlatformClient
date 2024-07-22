@@ -6,6 +6,139 @@
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/assets/owl.carousel.min.css" integrity="sha512-utbXk9e3p+d/2OVOZWUioe5D8yZT6gF9DHCB8PSTVsChEStUslYMy3/J35h6snOBP+4+a0oI8h/lzfqTw5V5NQ==" crossorigin="anonymous" referrerpolicy="no-referrer" />
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/assets/owl.theme.default.min.css" integrity="sha512-2M3k1L6OwCGQZrS/y8nlD72omwxRS2TL/lpTmBsGTuTjD9sSnzHUpJ/5wFgfnx7F4N6ZCokyMnxZy+ub/IDpDA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
 <style>
+    .cart-icon {
+        position: fixed;
+        bottom: 20px;
+        right: 20px;
+        background-color: #007bff;
+        color: white;
+        padding: 10px;
+        border-radius: 50%;
+        cursor: pointer;
+        display: none;
+    }
+
+        .cart-icon i {
+            font-size: 24px;
+        }
+
+        .cart-icon .badge {
+            position: absolute;
+            top: -10px;
+            right: -10px;
+            background-color: red;
+            color: white;
+            border-radius: 50%;
+            padding: 5px 10px;
+            font-size: 14px;
+        }
+
+    .cart-popup {
+        display: none;
+        position: fixed;
+        bottom: 70px;
+        right: 20px;
+        background-color: white;
+        border: 1px solid #ddd;
+        border-radius: 8px;
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
+        padding: 20px;
+        width: 300px;
+        max-height: 400px; /* Giới hạn độ cao của pop-up */
+        overflow-y: auto; /* Thêm thanh trượt khi nội dung vượt quá độ cao */
+    }
+
+        .cart-popup .cart-item {
+            border-bottom: 1px solid #ddd;
+            padding-bottom: 10px;
+            margin-bottom: 10px;
+        }
+
+            .cart-popup .cart-item:last-child {
+                border-bottom: none;
+                margin-bottom: 0;
+            }
+
+            .cart-popup .cart-item p {
+                margin: 5px 0;
+            }
+
+        .cart-popup .cart-total {
+            font-weight: bold;
+        }
+
+        .cart-popup .clear-cart {
+            display: flex;
+            justify-content: flex-end;
+            margin-bottom: 10px;
+        }
+
+    .cart-popup-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        background-color: #007bff;
+        color: white;
+        padding: 15px 10px 15px 10px;
+        border-radius: 8px 8px 0 0; /* Bo tròn góc trên */
+        margin-bottom: 10px
+    }
+
+        .cart-popup-header h4 {
+            margin: 0;
+            font-size: 16px;
+            color: white;
+        }
+
+    .cart-popup-footer {
+        background-color: #007bff;
+        color: white;
+        margin-top: 10px;
+        padding: 10px;
+        border-radius: 0 0 8px 8px; /* Bo tròn góc dưới */
+        text-align: center;
+    }
+
+        .cart-popup-footer button {
+            background-color: #007bff;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            font-size: 16px;
+            cursor: pointer;
+            width: 100%;
+            border-radius: 8px;
+        }
+
+    .cart-popup .cart-item .remove-item-icon {
+        font-size: 16px;
+        cursor: pointer;
+        background-color: #007bff;
+        color: white;
+        border-radius: 50%; /* Hình tròn */
+        padding: 5px;
+        margin-left: 10px;
+        float: right; /* Canh lề sát bên phải */
+    }
+
+    .notification {
+        display: none;
+        position: fixed;
+        top: 20px;
+        right: 20px;
+        background-color: #f44336;
+        color: white;
+        padding: 10px;
+        border-radius: 5px;
+        z-index: 1000;
+    }
+
+    .clear-cart-icon {
+        font-size: 24px;
+        cursor: pointer;
+    }
+
+
     .court-details {
         margin-top: 20px;
     }
@@ -97,7 +230,7 @@
     .timeslot {
         margin: 5px;
         padding: 10px;
-        background-color: #eee;
+        background-color: white;
         border-radius: 5px;
         cursor: pointer;
         border: 1px solid #ccc;
@@ -108,6 +241,7 @@
             color: white;
             border-color: #007bff;
         }
+
 
     .breadcrumb-section {
         background-color: #f3f3f3;
@@ -168,6 +302,33 @@
     </div>
 </section>
 <!-- Court Details Section End -->
+<!-- Icon Cart Section Begin-->
+<div class="cart-icon" id="cart-icon">
+    <i class="fa fa-shopping-cart"></i>
+    <span class="badge" id="cart-count">0</span>
+</div>
+
+
+<div class="cart-popup" id="cart-popup">
+    <div class="cart-popup-header">
+        <h4>Chi tiết giỏ hàng</h4>
+        <i class="fa fa-trash clear-cart-icon" id="clear-cart-icon"></i>
+    </div>
+    <div id="cart-items"></div>
+    <div class="cart-total">
+        Tổng thời gian: <span id="total-time">0</span> phút<br>
+        Tổng tiền: <span id="total-price">0</span> vnđ
+    </div>
+    <div class="cart-popup-footer">
+        <button id="checkout-button">Tiến Hành Đặt Sân</button>
+    </div>
+</div>
+
+
+
+<!-- Icon Cart Section End-->
+<!-- SweetAlert library -->
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js" integrity="sha512-KyZXEAg3QhqLMpG8r+Knujsl5+5hb7ie4K4e4M5C5R5r5QJ6D6Q6F6G5I5L6L7L6R5L6L6R5T5R6K7K6M5M5Q==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/owl.carousel.min.js" integrity="sha512-xM8johE+FVq1Oo7MxCE1gHSAkC3c6/bQ3yTQj4I5D2xXf5I4B6I6I5I4F5I5I5L4L4T4L5F4R4T4J6L5J6L6Q==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 <script>
@@ -175,16 +336,147 @@ document.addEventListener('DOMContentLoaded', async function () {
     const courtId = @Model.Id;
     const apiUrlCourt = `https://localhost:7020/api/v1/badminton-courts/${courtId}`;
     const apiUrlCourts = `https://localhost:7020/api/v1/courts?badmintonCourtId=${courtId}`;
+    const cartIcon = document.getElementById('cart-icon');
+    const cartPopup = document.getElementById('cart-popup');
+    const cartItemsContainer = document.getElementById('cart-items');
+    const totalTimeEl = document.getElementById('total-time');
+    const totalPriceEl = document.getElementById('total-price');
+    const cartCountEl = document.getElementById('cart-count');
+    const clearCartIcon = document.getElementById('clear-cart-icon');
+    const checkoutButton = document.getElementById('checkout-button');
+    const notification = document.getElementById('notification');
+    const notificationMessage = document.getElementById('notification-message');
+    let cart = [];
+    let badmintonCourt;
 
     function formatCurrency(value) {
         return value.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
     }
 
+    function updateCart() {
+        if (cart.length === 0) {
+            cartIcon.style.display = 'none';
+        } else {
+            cartIcon.style.display = 'block';
+            cartCountEl.textContent = cart.length;
+        }
+
+        cartItemsContainer.innerHTML = '';
+        let totalMinutes = 0;
+        let totalPrice = 0;
+
+        cart.forEach((item, index) => {
+            const itemEl = document.createElement('div');
+            itemEl.classList.add('cart-item');
+            itemEl.innerHTML = `
+                <p>Date: ${item.date}</p>
+                <p>Court Name: ${item.courtName}</p>
+                <p>Court Code: ${item.courtCode}</p>
+                <p>Time Slot: ${item.timeSlot} <i class="fa fa-minus remove-item-icon" data-index="${index}"></i></p>
+            `;
+            cartItemsContainer.appendChild(itemEl);
+
+            totalMinutes += 30; // Each time slot is 30 minutes
+            totalPrice += item.price;
+        });
+
+        totalTimeEl.textContent = totalMinutes;
+        totalPriceEl.textContent = formatCurrency(totalPrice);
+    }
+
+    function toggleCartPopup() {
+        if (cartPopup.style.display === 'block') {
+            cartPopup.style.display = 'none';
+        } else {
+            cartPopup.style.display = 'block';
+        }
+    }
+
+    function showNotification(message) {
+        notificationMessage.textContent = message;
+        notification.style.display = 'block';
+        setTimeout(() => {
+            notification.style.display = 'none';
+        }, 3000);
+    }
+
+    function removeTimeSlot(index) {
+        const removedItem = cart.splice(index, 1)[0];
+        document.querySelectorAll('.timeslot').forEach(slot => {
+            if (slot.innerText === removedItem.timeSlot) {
+                slot.classList.remove('selected');
+            }
+        });
+        updateCart();
+        showNotification('Đã xóa TimeSlot khỏi giỏ hàng.');
+    }
+
+    cartIcon.addEventListener('click', toggleCartPopup);
+
+    clearCartIcon.addEventListener('click', function () {
+        Swal.fire({
+            title: 'Bạn có chắc chắn?',
+            text: "Bạn có chắc chắn muốn xóa tất cả TimeSlot khỏi giỏ hàng?",
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Có, xóa hết!'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                cart = [];
+                document.querySelectorAll('.timeslot').forEach(slot => slot.classList.remove('selected'));
+                updateCart();
+                toggleCartPopup();
+                Swal.fire(
+                    'Đã xóa!',
+                    'Tất cả TimeSlot đã được xóa khỏi giỏ hàng.',
+                    'success'
+                );
+            }
+        });
+    });
+
+    cartItemsContainer.addEventListener('click', function (event) {
+        if (event.target.classList.contains('remove-item-icon')) {
+            const index = event.target.getAttribute('data-index');
+            Swal.fire({
+                title: 'Bạn có chắc chắn?',
+                text: "Bạn có chắc chắn muốn xóa TimeSlot này khỏi giỏ hàng?",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Có, xóa!'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    removeTimeSlot(index);
+                }
+            });
+        }
+    });
+
+    checkoutButton.addEventListener('click', function () {
+        Swal.fire({
+            title: 'Tiến hành đặt sân?',
+            text: "Bạn có chắc chắn muốn tiến hành đặt sân với các TimeSlot đã chọn?",
+            icon: 'info',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Có, tiến hành!'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                window.location.href = '/checkout'; // Đường dẫn đến trang Checkout
+            }
+        });
+    });
+
     try {
         const courtResponse = await fetch(apiUrlCourt);
         const courtData = await courtResponse.json();
         if (courtData.statusCode === 200) {
-            const badmintonCourt = courtData.data;
+            badmintonCourt = courtData.data;
 
             document.getElementById('court-name').innerText = badmintonCourt.courtName;
             document.getElementById('court-name-title').innerText = badmintonCourt.courtName;
@@ -285,8 +577,23 @@ document.addEventListener('DOMContentLoaded', async function () {
             // Add event listeners for timeslot selection
             document.querySelectorAll('.timeslot').forEach(slot => {
                 slot.addEventListener('click', function () {
-                    document.querySelectorAll('.timeslot').forEach(s => s.classList.remove('selected'));
-                    this.classList.add('selected');
+                    const selectedTimeSlot = {
+                        date: new Date().toLocaleDateString(),
+                        courtName: badmintonCourt.courtName,
+                        courtCode: courts[0].courtCode, // Lấy mã sân từ phần tử court đầu tiên
+                        timeSlot: this.innerText,
+                        price: courts[0].price // Sử dụng giá của sân đầu tiên để đơn giản hóa
+                    };
+
+                    if (this.classList.contains('selected')) {
+                        this.classList.remove('selected');
+                        cart = cart.filter(item => item.timeSlot !== selectedTimeSlot.timeSlot);
+                    } else {
+                        this.classList.add('selected');
+                        cart.push(selectedTimeSlot);
+                    }
+
+                    updateCart();
                 });
             });
 
@@ -320,5 +627,9 @@ document.addEventListener('DOMContentLoaded', async function () {
         return slots;
     }
 });
+</script>
+
 
 </script>
+
+
