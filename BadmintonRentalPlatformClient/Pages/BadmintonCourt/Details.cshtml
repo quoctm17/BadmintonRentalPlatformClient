@@ -1,188 +1,324 @@
-﻿@page
+﻿@page "/BadmintonCourt/Details/{id:int}"
 @model BadmintonRentalPlatformClient.Pages.BadmintonCourt.DetailsModel
 @{
+    ViewData["Title"] = "Badminton Court Details";
 }
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/assets/owl.carousel.min.css" integrity="sha512-utbXk9e3p+d/2OVOZWUioe5D8yZT6gF9DHCB8PSTVsChEStUslYMy3/J35h6snOBP+4+a0oI8h/lzfqTw5V5NQ==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/assets/owl.theme.default.min.css" integrity="sha512-2M3k1L6OwCGQZrS/y8nlD72omwxRS2TL/lpTmBsGTuTjD9sSnzHUpJ/5wFgfnx7F4N6ZCokyMnxZy+ub/IDpDA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+<style>
+    .court-details {
+        margin-top: 20px;
+    }
 
-    <!-- Breadcrumb Section Begin -->
-    <div class="breadcrumb-section">
-        <div class="container">
-            <div class="row">
-                <div class="col-lg-12">
-                    <div class="breadcrumb-text">
-                        <h2>Our Rooms</h2>
-                        <div class="bt-option">
-                            <a href="/Index">Home</a>
-                            <span>Rooms</span>
-                        </div>
+    .court-slider .slide {
+        width: 100%;
+        height: 400px;
+        overflow: hidden;
+    }
+
+        .court-slider .slide img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+    .owl-nav button {
+        position: absolute;
+        top: 50%;
+        transform: translateY(-50%);
+        background: white; /* Nền trắng */
+        border: none;
+        color: black; /* Màu biểu tượng đen */
+        padding: 10px !important; /* Padding cho hình chữ nhật */
+        cursor: pointer;
+        border-radius: 5px; /* Góc bo tròn nhẹ */
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3); /* Thêm đổ bóng */
+    }
+
+    .owl-nav .owl-prev {
+        left: 10px;
+    }
+
+    .owl-nav .owl-next {
+        right: 10px;
+    }
+
+    .owl-nav button:hover {
+        background: #f0f0f0; /* Màu nền xám nhạt khi hover */
+        color: black;
+    }
+
+
+    .court-info {
+        padding: 20px;
+        background-color: #f9f9f9;
+        border-radius: 8px;
+    }
+
+    .court-slots {
+        margin-top: 20px;
+    }
+
+    .court-slot {
+        display: flex;
+        align-items: center;
+        padding: 20px;
+        background-color: #fff;
+        border: 1px solid #ddd;
+        margin-bottom: 20px;
+        border-radius: 8px;
+    }
+
+        .court-slot img {
+            width: 200px;
+            height: 200px;
+            margin-right: 20px;
+            border-radius: 8px;
+            object-fit: cover;
+        }
+
+    .court-slot-content {
+        flex: 1;
+    }
+
+    .court-slot h4 {
+        margin-top: 0;
+    }
+
+    .court-slot p {
+        margin: 5px 0;
+    }
+
+    .timeslot-container {
+        display: flex;
+        flex-wrap: wrap;
+    }
+
+    .timeslot {
+        margin: 5px;
+        padding: 10px;
+        background-color: #eee;
+        border-radius: 5px;
+        cursor: pointer;
+        border: 1px solid #ccc;
+    }
+
+        .timeslot.selected {
+            background-color: #007bff;
+            color: white;
+            border-color: #007bff;
+        }
+
+    .breadcrumb-section {
+        background-color: #f3f3f3;
+        padding: 30px 0;
+    }
+
+    .breadcrumb-text {
+        color: #fff;
+    }
+</style>
+<!-- Breadcrumb Section Begin -->
+<div class="breadcrumb-section">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="breadcrumb-text">
+                    <h2 id="court-name">Court Name</h2>
+                    <div class="bt-option">
+                        <a href="/Index">Home</a>
+                        <span>Courts</span>
                     </div>
                 </div>
             </div>
         </div>
     </div>
-    <!-- Breadcrumb Section End -->
-    <!-- Room Details Section Begin -->
-    <section class="room-details-section spad">
-        <div class="container">
-            <div class="row">
-                <div class="col-lg-8">
-                    <div class="room-details-item">
-                        <img src="/img/room/room-details.jpg" alt="">
-                        <div class="rd-text">
-                            <div class="rd-title">
-                                <h3>Premium King Room</h3>
-                                <div class="rdt-right">
-                                    <div class="rating">
-                                        <i class="icon_star"></i>
-                                        <i class="icon_star"></i>
-                                        <i class="icon_star"></i>
-                                        <i class="icon_star"></i>
-                                        <i class="icon_star-half_alt"></i>
-                                    </div>
-                                    <a href="#">Booking Now</a>
-                                </div>
-                            </div>
-                            <h2>159$<span>/Pernight</span></h2>
-                            <table>
-                                <tbody>
-                                    <tr>
-                                        <td class="r-o">Size:</td>
-                                        <td>30 ft</td>
-                                    </tr>
-                                    <tr>
-                                        <td class="r-o">Capacity:</td>
-                                        <td>Max persion 5</td>
-                                    </tr>
-                                    <tr>
-                                        <td class="r-o">Bed:</td>
-                                        <td>King Beds</td>
-                                    </tr>
-                                    <tr>
-                                        <td class="r-o">Services:</td>
-                                        <td>Wifi, Television, Bathroom,...</td>
-                                    </tr>
-                                </tbody>
-                            </table>
-                            <p class="f-para">
-                                Motorhome or Trailer that is the question for you. Here are some of the
-                                advantages and disadvantages of both, so you will be confident when purchasing an RV.
-                                When comparing Rvs, a motorhome or a travel trailer, should you buy a motorhome or fifth
-                                wheeler? The advantages and disadvantages of both are studied so that you can make your
-                                choice wisely when purchasing an RV. Possessing a motorhome or fifth wheel is an
-                                achievement of a lifetime. It can be similar to sojourning with your residence as you
-                                search the various sites of our great land, America.
-                            </p>
-                            <p>
-                                The two commonly known recreational vehicle classes are the motorized and towable.
-                                Towable rvs are the travel trailers and the fifth wheel. The rv travel trailer or fifth
-                                wheel has the attraction of getting towed by a pickup or a car, thus giving the
-                                adaptability of possessing transportation for you when you are parked at your campsite.
-                            </p>
-                        </div>
-                    </div>
-                    <div class="rd-reviews">
-                        <h4>Reviews</h4>
-                        <div class="review-item">
-                            <div class="ri-pic">
-                                <img src="/img/room/avatar/avatar-1.jpg" alt="">
-                            </div>
-                            <div class="ri-text">
-                                <span>27 Aug 2019</span>
-                                <div class="rating">
-                                    <i class="icon_star"></i>
-                                    <i class="icon_star"></i>
-                                    <i class="icon_star"></i>
-                                    <i class="icon_star"></i>
-                                    <i class="icon_star-half_alt"></i>
-                                </div>
-                                <h5>Brandon Kelley</h5>
-                                <p>
-                                    Neque porro qui squam est, qui dolorem ipsum quia dolor sit amet, consectetur,
-                                    adipisci velit, sed quia non numquam eius modi tempora. incidunt ut labore et dolore
-                                    magnam.
-                                </p>
+</div>
+<!-- Breadcrumb Section End -->
+<!-- Court Details Section Begin -->
+<section class="room-details-section spad">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="court-details">
+                    <div class="row">
+                        <div class="col-lg-8">
+                            <div class="court-slider owl-carousel" id="court-image-slider">
+                                <!-- Images will be inserted here -->
                             </div>
                         </div>
-                        <div class="review-item">
-                            <div class="ri-pic">
-                                <img src="/img/room/avatar/avatar-2.jpg" alt="">
-                            </div>
-                            <div class="ri-text">
-                                <span>27 Aug 2019</span>
-                                <div class="rating">
-                                    <i class="icon_star"></i>
-                                    <i class="icon_star"></i>
-                                    <i class="icon_star"></i>
-                                    <i class="icon_star"></i>
-                                    <i class="icon_star-half_alt"></i>
+                        <div class="col-lg-4">
+                            <div class="court-info">
+                                <h3 id="court-name-title">Court Name</h3>
+                                <p id="court-description">Description</p>
+                                <p id="court-address">Address</p>
+                                <h4 id="court-price">Price per Slot</h4>
+                                <div class="rating" id="court-rating">
+                                    <!-- Ratings will be inserted here -->
                                 </div>
-                                <h5>Brandon Kelley</h5>
-                                <p>
-                                    Neque porro qui squam est, qui dolorem ipsum quia dolor sit amet, consectetur,
-                                    adipisci velit, sed quia non numquam eius modi tempora. incidunt ut labore et dolore
-                                    magnam.
-                                </p>
                             </div>
                         </div>
                     </div>
-                    <div class="review-add">
-                        <h4>Add Review</h4>
-                        <form action="#" class="ra-form">
-                            <div class="row">
-                                <div class="col-lg-6">
-                                    <input type="text" placeholder="Name*">
-                                </div>
-                                <div class="col-lg-6">
-                                    <input type="text" placeholder="Email*">
-                                </div>
-                                <div class="col-lg-12">
-                                    <div>
-                                        <h5>You Rating:</h5>
-                                        <div class="rating">
-                                            <i class="icon_star"></i>
-                                            <i class="icon_star"></i>
-                                            <i class="icon_star"></i>
-                                            <i class="icon_star"></i>
-                                            <i class="icon_star-half_alt"></i>
-                                        </div>
-                                    </div>
-                                    <textarea placeholder="Your Review"></textarea>
-                                    <button type="submit">Submit Now</button>
-                                </div>
-                            </div>
-                        </form>
-                    </div>
-                </div>
-                <div class="col-lg-4">
-                    <div class="room-booking">
-                        <h3>Your Reservation</h3>
-                        <form action="#">
-                            <div class="check-date">
-                                <label for="date-in">Check In:</label>
-                                <input type="text" class="date-input" id="date-in">
-                                <i class="icon_calendar"></i>
-                            </div>
-                            <div class="check-date">
-                                <label for="date-out">Check Out:</label>
-                                <input type="text" class="date-input" id="date-out">
-                                <i class="icon_calendar"></i>
-                            </div>
-                            <div class="select-option">
-                                <label for="guest">Guests:</label>
-                                <select id="guest">
-                                    <option value="">3 Adults</option>
-                                </select>
-                            </div>
-                            <div class="select-option">
-                                <label for="room">Room:</label>
-                                <select id="room">
-                                    <option value="">1 Room</option>
-                                </select>
-                            </div>
-                            <button type="submit">Check Availability</button>
-                        </form>
+                    <div class="court-slots" id="court-slots">
+                        <!-- Court slots will be inserted here -->
                     </div>
                 </div>
             </div>
         </div>
-    </section>
-    <!-- Room Details Section End -->
+    </div>
+</section>
+<!-- Court Details Section End -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js" integrity="sha512-KyZXEAg3QhqLMpG8r+Knujsl5+5hb7ie4K4e4M5C5R5r5QJ6D6Q6F6G5I5L6L7L6R5L6L6R5T5R6K7K6M5M5Q==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/owl.carousel.min.js" integrity="sha512-xM8johE+FVq1Oo7MxCE1gHSAkC3c6/bQ3yTQj4I5D2xXf5I4B6I6I5I4F5I5I5L4L4T4L5F4R4T4J6L5J6L6Q==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+<script>
+document.addEventListener('DOMContentLoaded', async function () {
+    const courtId = @Model.Id;
+    const apiUrlCourt = `https://localhost:7020/api/v1/badminton-courts/${courtId}`;
+    const apiUrlCourts = `https://localhost:7020/api/v1/courts?badmintonCourtId=${courtId}`;
+
+    function formatCurrency(value) {
+        return value.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
+    }
+
+    try {
+        const courtResponse = await fetch(apiUrlCourt);
+        const courtData = await courtResponse.json();
+        if (courtData.statusCode === 200) {
+            const badmintonCourt = courtData.data;
+
+            document.getElementById('court-name').innerText = badmintonCourt.courtName;
+            document.getElementById('court-name-title').innerText = badmintonCourt.courtName;
+            document.getElementById('court-description').innerText = badmintonCourt.description;
+            document.getElementById('court-address').innerText = badmintonCourt.address;
+
+            const ratingContainer = document.getElementById('court-rating');
+            ratingContainer.innerHTML = ''; // Clear previous ratings
+            for (let i = 0; i < 5; i++) {
+                const star = document.createElement('i');
+                if (i < Math.floor(badmintonCourt.rating)) {
+                    star.classList.add('icon_star');
+                } else {
+                    star.classList.add('icon_star_half_alt');
+                }
+                ratingContainer.appendChild(star);
+            }
+
+            // Hiển thị hình ảnh trong slider
+            const courtImageSlider = document.getElementById('court-image-slider');
+            courtImageSlider.innerHTML = ''; // Clear previous images
+            badmintonCourt.courtImagePaths.forEach(imagePath => {
+                const imageSlide = document.createElement('div');
+                imageSlide.classList.add('slide');
+                const img = document.createElement('img');
+                img.src = imagePath;
+                imageSlide.appendChild(img);
+                courtImageSlider.appendChild(imageSlide);
+            });
+
+            // Khởi tạo Owl Carousel
+            $('.court-slider').owlCarousel({
+                items: 1,
+                loop: true,
+                autoplay: true,
+                autoplayTimeout: 5000,
+                dots: true,
+                nav: true,
+                navText: ["<i class='fa fa-chevron-left'></i>", "<i class='fa fa-chevron-right'></i>"]
+            });
+
+            // Save startTime and endTime for generating time slots
+            window.startTime = badmintonCourt.startTime;
+            window.endTime = badmintonCourt.endTime;
+        } else {
+            console.error('Failed to fetch data: ', courtData.message);
+        }
+    } catch (error) {
+        console.error('Error fetching court data: ', error);
+    }
+
+    try {
+        const courtsResponse = await fetch(apiUrlCourts);
+        const courtsData = await courtsResponse.json();
+        if (courtsData.statusCode === 200) {
+            const courts = courtsData.data;
+            const courtSlotsContainer = document.getElementById('court-slots');
+
+            let minPrice = Infinity;
+            let maxPrice = 0;
+
+            courts.forEach(courtItem => {
+                // Calculate min and max prices
+                if (courtItem.price < minPrice) {
+                    minPrice = courtItem.price;
+                }
+                if (courtItem.price > maxPrice) {
+                    maxPrice = courtItem.price;
+                }
+
+                // Generate Time Slots
+                const timeSlots = generateTimeSlots(window.startTime, window.endTime);
+
+                // Add court details
+                const courtSlot = document.createElement('div');
+                courtSlot.classList.add('court-slot');
+                courtSlot.innerHTML = `
+                    <img src="${courtItem.courtImage}" alt="${courtItem.courtCode}">
+                    <div class="court-slot-content">
+                        <h4>${courtItem.courtCode}</h4>
+                        <p>Price: ${formatCurrency(courtItem.price)} vnđ</p>
+                        <p>Type: ${courtItem.typeOfCourtName || 'N/A'}</p>
+                        <div class="timeslot-container">
+                            ${timeSlots.map(slot => `<div class="timeslot">${slot}</div>`).join('')}
+                        </div>
+                    </div>
+                `;
+                courtSlotsContainer.appendChild(courtSlot);
+            });
+
+            // Update Badminton Court Price Range
+            if (minPrice !== Infinity && maxPrice !== 0) {
+                document.getElementById('court-price').innerText = `Price: ${formatCurrency(minPrice)} - ${formatCurrency(maxPrice)} vnđ`;
+            } else {
+                document.getElementById('court-price').innerText = `Price: N/A`;
+            }
+
+            // Add event listeners for timeslot selection
+            document.querySelectorAll('.timeslot').forEach(slot => {
+                slot.addEventListener('click', function () {
+                    document.querySelectorAll('.timeslot').forEach(s => s.classList.remove('selected'));
+                    this.classList.add('selected');
+                });
+            });
+
+        } else {
+            console.error('Failed to fetch courts data: ', courtsData.message);
+        }
+    } catch (error) {
+        console.error('Error fetching courts data: ', error);
+    }
+
+    // Function to generate time slots
+    function generateTimeSlots(startTime, endTime) {
+        if (!startTime || !endTime) return [];
+        const slots = [];
+        const start = new Date();
+        const end = new Date();
+
+        const [startHour, startMinute] = startTime.split(':').map(Number);
+        const [endHour, endMinute] = endTime.split(':').map(Number);
+
+        start.setHours(startHour, startMinute, 0);
+        end.setHours(endHour, endMinute, 0);
+
+        const slotDuration = 30 * 60 * 1000; // 30 minutes in milliseconds
+
+        while ((end - start) > slotDuration) {
+            slots.push(start.toTimeString().substr(0, 5));
+            start.setTime(start.getTime() + slotDuration);
+        }
+
+        return slots;
+    }
+});
+
+</script>
