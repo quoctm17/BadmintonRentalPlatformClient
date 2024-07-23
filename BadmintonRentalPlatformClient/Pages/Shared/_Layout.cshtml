@@ -25,7 +25,27 @@
     <link rel="stylesheet" href="~/css/magnific-popup.css" type="text/css">
     <link rel="stylesheet" href="~/css/slicknav.min.css" type="text/css">
     <link rel="stylesheet" href="~/css/style.css" type="text/css">
+    <style>
+        .nav-right {
+            display: flex;
+            align-items: center;
+        }
 
+        .login-icon {
+            color: #333;
+            text-decoration: none;
+            font-size: 16px;
+            transition: color 0.3s;
+        }
+
+            .login-icon i {
+                margin-right: 5px;
+            }
+
+            .login-icon:hover {
+                color: #dfa974;
+            }
+    </style>
 </head>
 <body>
     <!-- Page Preloder -->
@@ -109,13 +129,13 @@
                             <a href="#" class="bk-btn">Booking Now</a>
                             <div class="language-option">
                                 <img src="/img/flag.jpg" alt="">
-                                <span>EN <i class="fa fa-angle-down"></i></span>
-                                <div class="flag-dropdown">
+                                <span>VI <i class="fa fa-angle-down"></i></span>
+                                @*<div class="flag-dropdown">
                                     <ul>
                                         <li><a href="#">Zi</a></li>
                                         <li><a href="#">Fr</a></li>
                                     </ul>
-                                </div>
+                                </div>*@
                             </div>
                         </div>
                     </div>
@@ -150,8 +170,10 @@
                                     <li><a href="/contact">Contact</a></li>
                                 </ul>
                             </nav>
-                            <div class="nav-right search-switch">
-                                <i class="icon_search"></i>
+                            <div class="nav-right">
+                                <a href="/account/login" class="login-icon">
+                                    <i class="fa fa-user"></i> Đăng Nhập
+                                </a>
                             </div>
                         </div>
                     </div>
