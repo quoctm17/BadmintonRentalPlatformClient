@@ -6,6 +6,104 @@
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/assets/owl.carousel.min.css" integrity="sha512-utbXk9e3p+d/2OVOZWUioe5D8yZT6gF9DHCB8PSTVsChEStUslYMy3/J35h6snOBP+4+a0oI8h/lzfqTw5V5NQ==" crossorigin="anonymous" referrerpolicy="no-referrer" />
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/assets/owl.theme.default.min.css" integrity="sha512-2M3k1L6OwCGQZrS/y8nlD72omwxRS2TL/lpTmBsGTuTjD9sSnzHUpJ/5wFgfnx7F4N6ZCokyMnxZy+ub/IDpDA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
 <style>
+    .date-picker-container {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin: 20px 0;
+        overflow: hidden;
+    }
+
+    .date-list {
+        display: flex;
+        overflow-x: auto;
+        scroll-behavior: smooth;
+        padding: 10px 0; /* Thêm padding để có không gian giữa các ngày */
+    }
+
+    .date-item {
+        padding: 10px;
+        margin: 0 10px; /* Tăng margin để tạo khoảng cách rộng hơn */
+        background-color: #f3f3f3;
+        border-radius: 5px;
+        text-align: center;
+        min-width: 80px; /* Mở rộng chiều ngang */
+        cursor: pointer;
+        border: 1px solid transparent;
+    }
+
+        .date-item div {
+            display: block; /* Hiển thị thứ và ngày trên cùng một hàng */
+        }
+
+        .date-item:hover,
+        .date-item.selected {
+            background-color: #007bff;
+            color: white;
+            border-color: #007bff;
+        }
+
+    .prev-day,
+    .next-day {
+        background-color: #007bff;
+        color: white;
+        border: none;
+        padding: 10px;
+        cursor: pointer;
+        border-radius: 50%;
+        font-size: 16px;
+    }
+
+        .prev-day:hover,
+        .next-day:hover {
+            background-color: #0056b3;
+        }
+    .status-bar {
+        display: flex;
+        justify-content: space-around;
+        align-items: center;
+        margin: 20px 0;
+        font-size: 14px;
+        color: black;
+    }
+
+    .status-item {
+        display: flex;
+        align-items: center;
+    }
+
+        .status-item .color-box {
+            width: 20px;
+            height: 20px;
+            margin-right: 10px;
+            border: 1px solid #000;
+        }
+
+        .status-item .booked {
+            background-color: #ccc;
+        }
+
+        .status-item .pending {
+            background-color: yellow;
+        }
+
+        .status-item .confirmed {
+            background-color: red;
+        }
+
+        .status-item .checked-in {
+            background-color: green;
+        }
+
+        .status-item .completed {
+            background-color: blue;
+        }
+
+        .status-item .cancelled {
+            background-color: gray;
+        }
+
+
     .cart-icon {
         position: fixed;
         bottom: 20px;
@@ -138,7 +236,6 @@
         cursor: pointer;
     }
 
-
     .court-details {
         margin-top: 20px;
     }
@@ -180,7 +277,6 @@
         background: #f0f0f0; /* Màu nền xám nhạt khi hover */
         color: black;
     }
-
 
     .court-info {
         padding: 20px;
@@ -241,7 +337,10 @@
             color: white;
             border-color: #007bff;
         }
-
+        .timeslot.booked {
+            background-color: #ccc;
+            cursor: not-allowed;
+        }
 
     .breadcrumb-section {
         background-color: #f3f3f3;
@@ -293,6 +392,32 @@
                             </div>
                         </div>
                     </div>
+                    <!-- Date Picker Section Begin -->
+                    <div class="date-picker-container">
+                        <button class="prev-day"><</button>
+                        <div class="date-list">
+                            <!-- Days will be dynamically inserted here -->
+                        </div>
+                        <button class="next-day">></button>
+                    </div>
+                    <!-- Date Picker Section End -->
+                    <!-- Status Bar Section Begin -->
+                    <div class="status-bar">
+                        <div class="status-item">
+                            <div class="color-box pending"></div>
+                            <span>Chờ chốt sân</span>
+                        </div>
+                        <div class="status-item">
+                            <div class="color-box confirmed"></div>
+                            <span>Đã xác nhận thanh toán</span>
+                        </div>
+                        <div class="status-item">
+                            <div class="color-box booked"></div>
+                            <span>Đã được đặt</span>
+                        </div>
+                    </div>
+                    <!-- Status Bar Section End -->
+
                     <div class="court-slots" id="court-slots">
                         <!-- Court slots will be inserted here -->
                     </div>
@@ -307,7 +432,6 @@
     <i class="fa fa-shopping-cart"></i>
     <span class="badge" id="cart-count">0</span>
 </div>
-
 
 <div class="cart-popup" id="cart-popup">
     <div class="cart-popup-header">
@@ -324,15 +448,13 @@
     </div>
 </div>
 
-
-
 <!-- Icon Cart Section End-->
 <!-- SweetAlert library -->
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js" integrity="sha512-KyZXEAg3QhqLMpG8r+Knujsl5+5hb7ie4K4e4M5C5R5r5QJ6D6Q6F6G5I5L6L7L6R5L6L6R5T5R6K7K6M5M5Q==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/owl.carousel.min.js" integrity="sha512-xM8johE+FVq1Oo7MxCE1gHSAkC3c6/bQ3yTQj4I5D2xXf5I4B6I6I5I4F5I5I5L4L4T4L5F4R4T4J6L5J6L6Q==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 <script>
-document.addEventListener('DOMContentLoaded', async function () {
+document.addEventListener('DOMContentLoaded', function () {
     const courtId = @Model.Id;
     const apiUrlCourt = `https://localhost:7020/api/v1/badminton-courts/${courtId}`;
     const apiUrlCourts = `https://localhost:7020/api/v1/courts?badmintonCourtId=${courtId}`;
@@ -346,8 +468,257 @@ document.addEventListener('DOMContentLoaded', async function () {
     const checkoutButton = document.getElementById('checkout-button');
     const notification = document.getElementById('notification');
     const notificationMessage = document.getElementById('notification-message');
+    const dateList = document.querySelector('.date-list');
+    const prevDayButton = document.querySelector('.prev-day');
+    const nextDayButton = document.querySelector('.next-day');
+    const today = new Date();
     let cart = [];
+    let selectedDate = today;
     let badmintonCourt;
+
+    function createDateItem(date) {
+        const daysOfWeek = ['Chủ Nhật', 'Thứ 2', 'Thứ 3', 'Thứ 4', 'Thứ 5', 'Thứ 6', 'Thứ 7'];
+        const dateItem = document.createElement('div');
+        dateItem.classList.add('date-item');
+        dateItem.innerHTML = `
+        <div>${daysOfWeek[date.getDay()]}</div>
+        <div>${date.getDate()}/${date.getMonth() + 1}</div>
+    `;
+        dateItem.dataset.date = date.toDateString();
+        dateItem.addEventListener('click', function () {
+            document.querySelectorAll('.date-item').forEach(item => item.classList.remove('selected'));
+            dateItem.classList.add('selected');
+            selectedDate = new Date(dateItem.dataset.date);
+            updateSelectedDate(selectedDate); // Cập nhật ngày đã chọn
+            fetchCourtsAndUpdateSlots(); // Cập nhật danh sách slot
+        });
+
+        return dateItem;
+    }
+
+    function updateDateList(baseDate) {
+        dateList.innerHTML = '';
+        for (let i = -3; i <= 3; i++) {
+            const date = new Date(baseDate);
+            date.setDate(baseDate.getDate() + i);
+            const dateItem = createDateItem(date);
+            if (i === 0) {
+                dateItem.classList.add('selected');
+            }
+            dateList.appendChild(dateItem);
+        }
+    }
+
+    function updateSelectedDate(date) {
+        console.log('Selected date:', date.toDateString());
+        selectedDate = date;
+    }
+    prevDayButton.addEventListener('click', function () {
+        selectedDate.setDate(selectedDate.getDate() - 1);
+        updateDateList(selectedDate);
+        fetchCourtsAndUpdateSlots();
+    });
+
+    nextDayButton.addEventListener('click', function () {
+        selectedDate.setDate(selectedDate.getDate() + 1);
+        updateDateList(selectedDate);
+        fetchCourtsAndUpdateSlots();
+    });
+
+    updateDateList(today);
+
+    async function fetchData() {
+        try {
+            const courtResponse = await fetch(apiUrlCourt);
+            const courtData = await courtResponse.json();
+            if (courtData.statusCode === 200) {
+                badmintonCourt = courtData.data;
+
+                document.getElementById('court-name').innerText = badmintonCourt.courtName;
+                document.getElementById('court-name-title').innerText = badmintonCourt.courtName;
+                document.getElementById('court-description').innerText = badmintonCourt.description;
+                document.getElementById('court-address').innerText = badmintonCourt.address;
+
+                const ratingContainer = document.getElementById('court-rating');
+                ratingContainer.innerHTML = ''; // Clear previous ratings
+                for (let i = 0; i < 5; i++) {
+                    const star = document.createElement('i');
+                    if (i < Math.floor(badmintonCourt.rating)) {
+                        star.classList.add('icon_star');
+                    } else {
+                        star.classList.add('icon_star_half_alt');
+                    }
+                    ratingContainer.appendChild(star);
+                }
+
+                // Hiển thị hình ảnh trong slider
+                const courtImageSlider = document.getElementById('court-image-slider');
+                courtImageSlider.innerHTML = ''; // Clear previous images
+                badmintonCourt.courtImagePaths.forEach(imagePath => {
+                    const imageSlide = document.createElement('div');
+                    imageSlide.classList.add('slide');
+                    const img = document.createElement('img');
+                    img.src = imagePath;
+                    imageSlide.appendChild(img);
+                    courtImageSlider.appendChild(imageSlide);
+                });
+
+                // Khởi tạo Owl Carousel
+                $('.court-slider').owlCarousel({
+                    items: 1,
+                    loop: true,
+                    autoplay: true,
+                    autoplayTimeout: 5000,
+                    dots: true,
+                    nav: true,
+                    navText: ["<i class='fa fa-chevron-left'></i>", "<i class='fa fa-chevron-right'></i>"]
+                });
+
+                // Save startTime and endTime for generating time slots
+                window.startTime = badmintonCourt.startTime;
+                window.endTime = badmintonCourt.endTime;
+
+                fetchCourtsAndUpdateSlots();
+            } else {
+                console.error('Failed to fetch data: ', courtData.message);
+            }
+        } catch (error) {
+            console.error('Error fetching court data: ', error);
+        }
+    }
+
+    async function fetchCourtsAndUpdateSlots() {
+        try {
+            const courtsResponse = await fetch(apiUrlCourts);
+            const courtsData = await courtsResponse.json();
+            if (courtsData.statusCode === 200) {
+                const courts = courtsData.data;
+                const courtSlotsContainer = document.getElementById('court-slots');
+                courtSlotsContainer.innerHTML = ''; // Clear previous slots
+
+                let minPrice = Infinity;
+                let maxPrice = 0;
+
+                // Lấy danh sách slot đã được đặt
+                const bookedSlots = await fetchBookedSlots(selectedDate, courtId);
+
+                courts.forEach(courtItem => {
+                    // Calculate min and max prices
+                    if (courtItem.price < minPrice) {
+                        minPrice = courtItem.price;
+                    }
+                    if (courtItem.price > maxPrice) {
+                        maxPrice = courtItem.price;
+                    }
+
+                    // Generate Time Slots
+                    const timeSlots = generateTimeSlots(window.startTime, window.endTime);
+
+                    // Add court details
+                    const courtSlot = document.createElement('div');
+                    courtSlot.classList.add('court-slot');
+                    courtSlot.innerHTML = `
+                    <img src="${courtItem.courtImage}" alt="${courtItem.courtCode}">
+                    <div class="court-slot-content">
+                        <h4>${courtItem.courtCode}</h4>
+                        <p>Price: ${formatCurrency(courtItem.price)} vnđ</p>
+                        <p>Type: ${courtItem.typeOfCourtName || 'N/A'}</p>
+                        <div class="timeslot-container">
+                            ${timeSlots.map(slot => {
+                        const [hour, minute] = slot.split(':');
+                        const slotTime = new Date(selectedDate);
+                        slotTime.setHours(hour, minute, 0, 0);
+                        const booked = isBooked(slotTime, bookedSlots, courtItem.id);
+                        return `<div class="timeslot ${booked ? 'booked' : ''}">${slot}</div>`;
+                    }).join('')}
+                        </div>
+                    </div>
+                `;
+                    courtSlotsContainer.appendChild(courtSlot);
+                });
+
+                // Update Badminton Court Price Range
+                if (minPrice !== Infinity && maxPrice !== 0) {
+                    document.getElementById('court-price').innerText = `Price: ${formatCurrency(minPrice)} - ${formatCurrency(maxPrice)} vnđ`;
+                } else {
+                    document.getElementById('court-price').innerText = `Price: N/A`;
+                }
+
+                // Add event listeners for timeslot selection
+                document.querySelectorAll('.timeslot').forEach(slot => {
+                    if (!slot.classList.contains('booked')) {
+                        slot.addEventListener('click', function () {
+                            const courtCode = this.closest('.court-slot').querySelector('h4').innerText;
+                            const selectedTimeSlot = {
+                                date: selectedDate.toLocaleDateString(),
+                                courtName: badmintonCourt.courtName,
+                                courtCode: courtCode,
+                                timeSlot: this.innerText,
+                                price: courts.find(court => court.courtCode === courtCode).price
+                            };
+
+                            if (this.classList.contains('selected')) {
+                                this.classList.remove('selected');
+                                cart = cart.filter(item => !(item.date === selectedTimeSlot.date && item.timeSlot === selectedTimeSlot.timeSlot && item.courtCode === selectedTimeSlot.courtCode));
+                            } else {
+                                this.classList.add('selected');
+                                if (!cart.some(item => item.date === selectedTimeSlot.date && item.timeSlot === selectedTimeSlot.timeSlot && item.courtCode === selectedTimeSlot.courtCode)) {
+                                    cart.push(selectedTimeSlot);
+                                }
+                            }
+
+                            updateCart();
+                        });
+                    }
+                });
+
+                highlightSelectedSlots();
+            } else {
+                console.error('Failed to fetch courts data: ', courtsData.message);
+            }
+        } catch (error) {
+            console.error('Error fetching courts data: ', error);
+        }
+    }
+
+
+    function generateTimeSlots(startTime, endTime) {
+        if (!startTime || !endTime) return [];
+        const slots = [];
+        const start = new Date();
+        const end = new Date();
+
+        const [startHour, startMinute] = startTime.split(':').map(Number);
+        const [endHour, endMinute] = endTime.split(':').map(Number);
+
+        start.setHours(startHour, startMinute, 0);
+        end.setHours(endHour, endMinute, 0);
+
+        const slotDuration = 30 * 60 * 1000; // 30 minutes in milliseconds
+
+        while ((end - start) > slotDuration) {
+            slots.push(start.toTimeString().substr(0, 5));
+            start.setTime(start.getTime() + slotDuration);
+        }
+
+        return slots;
+    }
+
+    function highlightSelectedSlots() {
+        document.querySelectorAll('.court-slot').forEach(courtSlot => {
+            const courtCode = courtSlot.querySelector('h4').innerText;
+            courtSlot.querySelectorAll('.timeslot').forEach(slot => {
+                const slotTime = slot.innerText;
+                const slotDate = selectedDate.toLocaleDateString();
+                if (cart.some(item => item.date === slotDate && item.timeSlot === slotTime && item.courtCode === courtCode)) {
+                    slot.classList.add('selected');
+                } else {
+                    slot.classList.remove('selected');
+                }
+            });
+        });
+    }
+
 
     function formatCurrency(value) {
         return value.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
@@ -369,11 +740,11 @@ document.addEventListener('DOMContentLoaded', async function () {
             const itemEl = document.createElement('div');
             itemEl.classList.add('cart-item');
             itemEl.innerHTML = `
-                <p>Date: ${item.date}</p>
-                <p>Court Name: ${item.courtName}</p>
-                <p>Court Code: ${item.courtCode}</p>
-                <p>Time Slot: ${item.timeSlot} <i class="fa fa-minus remove-item-icon" data-index="${index}"></i></p>
-            `;
+            <p>Ngày: ${formatDate(item.date)}</p>
+            <p>Tên Sân: ${item.courtName}</p>
+            <p>Mã Sân: ${item.courtCode}</p>
+            <p>Giờ: ${item.timeSlot} <i class="fa fa-minus remove-item-icon" data-index="${index}"></i></p>
+        `;
             cartItemsContainer.appendChild(itemEl);
 
             totalMinutes += 30; // Each time slot is 30 minutes
@@ -383,6 +754,16 @@ document.addEventListener('DOMContentLoaded', async function () {
         totalTimeEl.textContent = totalMinutes;
         totalPriceEl.textContent = formatCurrency(totalPrice);
     }
+
+
+    function formatDate(dateString) {
+        const date = new Date(dateString);
+        const day = date.getDate().toString().padStart(2, '0');
+        const month = (date.getMonth() + 1).toString().padStart(2, '0');
+        const year = date.getFullYear();
+        return `${day}/${month}/${year}`;
+    }
+
 
     function toggleCartPopup() {
         if (cartPopup.style.display === 'block') {
@@ -400,16 +781,39 @@ document.addEventListener('DOMContentLoaded', async function () {
         }, 3000);
     }
 
+    async function fetchBookedSlots(date, courtId) {
+        const apiUrlSlots = `https://localhost:7020/api/v1/get-all-slot-by-date-and-badminton-court?badmintonCourtId=${courtId}&date=${date.toISOString().split('T')[0]}`;
+        const response = await fetch(apiUrlSlots);
+        const data = await response.json();
+        if (data.statusCode === 200) {
+            return data.data;
+        }
+        return [];
+    }
+
+    function isBooked(slotTime, bookedSlots, courtId) {
+        return bookedSlots.some(bs => {
+            const startTime = new Date(bs.dateTime);
+            startTime.setHours(bs.startTime.split(':')[0], bs.startTime.split(':')[1], 0, 0);
+            return startTime.getTime() === slotTime.getTime() && bs.courtId === courtId;
+        });
+    }
+
+
+
     function removeTimeSlot(index) {
         const removedItem = cart.splice(index, 1)[0];
         document.querySelectorAll('.timeslot').forEach(slot => {
-            if (slot.innerText === removedItem.timeSlot) {
+            const slotTime = slot.innerText;
+            const slotDate = new Date(removedItem.date).toLocaleDateString();
+            if (slot.innerText === removedItem.timeSlot && slotDate === removedItem.date) {
                 slot.classList.remove('selected');
             }
         });
         updateCart();
         showNotification('Đã xóa TimeSlot khỏi giỏ hàng.');
     }
+
 
     cartIcon.addEventListener('click', toggleCartPopup);
 
@@ -472,161 +876,7 @@ document.addEventListener('DOMContentLoaded', async function () {
         });
     });
 
-    try {
-        const courtResponse = await fetch(apiUrlCourt);
-        const courtData = await courtResponse.json();
-        if (courtData.statusCode === 200) {
-            badmintonCourt = courtData.data;
-
-            document.getElementById('court-name').innerText = badmintonCourt.courtName;
-            document.getElementById('court-name-title').innerText = badmintonCourt.courtName;
-            document.getElementById('court-description').innerText = badmintonCourt.description;
-            document.getElementById('court-address').innerText = badmintonCourt.address;
-
-            const ratingContainer = document.getElementById('court-rating');
-            ratingContainer.innerHTML = ''; // Clear previous ratings
-            for (let i = 0; i < 5; i++) {
-                const star = document.createElement('i');
-                if (i < Math.floor(badmintonCourt.rating)) {
-                    star.classList.add('icon_star');
-                } else {
-                    star.classList.add('icon_star_half_alt');
-                }
-                ratingContainer.appendChild(star);
-            }
-
-            // Hiển thị hình ảnh trong slider
-            const courtImageSlider = document.getElementById('court-image-slider');
-            courtImageSlider.innerHTML = ''; // Clear previous images
-            badmintonCourt.courtImagePaths.forEach(imagePath => {
-                const imageSlide = document.createElement('div');
-                imageSlide.classList.add('slide');
-                const img = document.createElement('img');
-                img.src = imagePath;
-                imageSlide.appendChild(img);
-                courtImageSlider.appendChild(imageSlide);
-            });
-
-            // Khởi tạo Owl Carousel
-            $('.court-slider').owlCarousel({
-                items: 1,
-                loop: true,
-                autoplay: true,
-                autoplayTimeout: 5000,
-                dots: true,
-                nav: true,
-                navText: ["<i class='fa fa-chevron-left'></i>", "<i class='fa fa-chevron-right'></i>"]
-            });
-
-            // Save startTime and endTime for generating time slots
-            window.startTime = badmintonCourt.startTime;
-            window.endTime = badmintonCourt.endTime;
-        } else {
-            console.error('Failed to fetch data: ', courtData.message);
-        }
-    } catch (error) {
-        console.error('Error fetching court data: ', error);
-    }
-
-    try {
-        const courtsResponse = await fetch(apiUrlCourts);
-        const courtsData = await courtsResponse.json();
-        if (courtsData.statusCode === 200) {
-            const courts = courtsData.data;
-            const courtSlotsContainer = document.getElementById('court-slots');
-
-            let minPrice = Infinity;
-            let maxPrice = 0;
-
-            courts.forEach(courtItem => {
-                // Calculate min and max prices
-                if (courtItem.price < minPrice) {
-                    minPrice = courtItem.price;
-                }
-                if (courtItem.price > maxPrice) {
-                    maxPrice = courtItem.price;
-                }
-
-                // Generate Time Slots
-                const timeSlots = generateTimeSlots(window.startTime, window.endTime);
-
-                // Add court details
-                const courtSlot = document.createElement('div');
-                courtSlot.classList.add('court-slot');
-                courtSlot.innerHTML = `
-                    <img src="${courtItem.courtImage}" alt="${courtItem.courtCode}">
-                    <div class="court-slot-content">
-                        <h4>${courtItem.courtCode}</h4>
-                        <p>Price: ${formatCurrency(courtItem.price)} vnđ</p>
-                        <p>Type: ${courtItem.typeOfCourtName || 'N/A'}</p>
-                        <div class="timeslot-container">
-                            ${timeSlots.map(slot => `<div class="timeslot">${slot}</div>`).join('')}
-                        </div>
-                    </div>
-                `;
-                courtSlotsContainer.appendChild(courtSlot);
-            });
-
-            // Update Badminton Court Price Range
-            if (minPrice !== Infinity && maxPrice !== 0) {
-                document.getElementById('court-price').innerText = `Price: ${formatCurrency(minPrice)} - ${formatCurrency(maxPrice)} vnđ`;
-            } else {
-                document.getElementById('court-price').innerText = `Price: N/A`;
-            }
-
-            // Add event listeners for timeslot selection
-            document.querySelectorAll('.timeslot').forEach(slot => {
-                slot.addEventListener('click', function () {
-                    const selectedTimeSlot = {
-                        date: new Date().toLocaleDateString(),
-                        courtName: badmintonCourt.courtName,
-                        courtCode: courts[0].courtCode, // Lấy mã sân từ phần tử court đầu tiên
-                        timeSlot: this.innerText,
-                        price: courts[0].price // Sử dụng giá của sân đầu tiên để đơn giản hóa
-                    };
-
-                    if (this.classList.contains('selected')) {
-                        this.classList.remove('selected');
-                        cart = cart.filter(item => item.timeSlot !== selectedTimeSlot.timeSlot);
-                    } else {
-                        this.classList.add('selected');
-                        cart.push(selectedTimeSlot);
-                    }
-
-                    updateCart();
-                });
-            });
-
-        } else {
-            console.error('Failed to fetch courts data: ', courtsData.message);
-        }
-    } catch (error) {
-        console.error('Error fetching courts data: ', error);
-    }
-
-    // Function to generate time slots
-    function generateTimeSlots(startTime, endTime) {
-        if (!startTime || !endTime) return [];
-        const slots = [];
-        const start = new Date();
-        const end = new Date();
-
-        const [startHour, startMinute] = startTime.split(':').map(Number);
-        const [endHour, endMinute] = endTime.split(':').map(Number);
-
-        start.setHours(startHour, startMinute, 0);
-        end.setHours(endHour, endMinute, 0);
-
-        const slotDuration = 30 * 60 * 1000; // 30 minutes in milliseconds
-
-        while ((end - start) > slotDuration) {
-            slots.push(start.toTimeString().substr(0, 5));
-            start.setTime(start.getTime() + slotDuration);
-        }
-
-        return slots;
-    }
+    fetchData();
 });
+
 </script>
-
-
