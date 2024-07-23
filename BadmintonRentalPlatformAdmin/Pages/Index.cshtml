@@ -1,9 +1,14 @@
 ﻿@page
+@using BadmintonRentalPlatformAdmin.Configuration
 @model IndexModel
 @{
     ViewData["Title"] = "Home page";
+    var isLogin = SessionHelper.GetObjectFromJson<bool>(HttpContext.Session, "isLogin");
 }
 
+@if (isLogin)
+{
+    
 <!-- Begin Page Content -->
 <div class="container-fluid">
 
@@ -344,4 +349,9 @@
         </div>
     </div>
 </footer>
-<!-- End of Footer -->
+    <!-- End of Footer -->
+}
+else
+{
+    Response.Redirect("/Login");
+}

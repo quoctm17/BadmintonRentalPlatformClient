@@ -14,7 +14,7 @@ public class Index : PageModel
 
     public async Task<IActionResult> OnGetAsync()
     {
-        Users = HttpClientReference.GetHttpClient<Result<List<UserDto>>>(UrlExtension.URL + "api/v1/users").Data!;
+        Users = HttpClientReference.GetHttpClient<Result<List<UserDto>>>(UrlExtension.URL + "api/v1/users").data!;
         return Page();
     }
 }
