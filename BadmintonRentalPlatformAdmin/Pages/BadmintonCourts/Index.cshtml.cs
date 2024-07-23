@@ -15,7 +15,7 @@ public class Index : PageModel
 
     public async Task<IActionResult> OnGetAsync()
     {
-        BadmintonCourts = HttpClientReference.GetHttpClient<Result<List<BadmintonCourtDto>>>(UrlExtension.URL + "api/v1/badminton-courts").Data!;
+        BadmintonCourts = HttpClientReference.GetHttpClient<Result<List<BadmintonCourtDto>>>(UrlExtension.URL + "api/v1/badminton-courts").data!;
         return Page();
     }
 }
