@@ -3,15 +3,15 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.9.34607.119
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BadmintonRentalPlatformClient", "BadmintonRentalPlatformClient\BadmintonRentalPlatformClient.csproj", "{C64AF47A-B4F8-4070-861B-EBF9EFD59D89}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BadmintonRentalPlatformClient", "BadmintonRentalPlatformClient\BadmintonRentalPlatformClient.csproj", "{C64AF47A-B4F8-4070-861B-EBF9EFD59D89}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Utilization", "Utilization\Utilization.csproj", "{C6FB98A4-E1B2-4A24-ACD0-04B75EC3A543}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Utilization", "Utilization\Utilization.csproj", "{C6FB98A4-E1B2-4A24-ACD0-04B75EC3A543}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BadmintonRentalPlatformAdmin", "BadmintonRentalPlatformAdmin\BadmintonRentalPlatformAdmin.csproj", "{B0D94830-418D-4CA5-A101-CA3D2FBC0FE6}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BadmintonRentalPlatformAdmin", "BadmintonRentalPlatformAdmin\BadmintonRentalPlatformAdmin.csproj", "{B0D94830-418D-4CA5-A101-CA3D2FBC0FE6}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BusinessObject", "BusinessObject\BusinessObject.csproj", "{CCF35E53-56CF-4941-A160-1B82EDBE8446}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BusinessObject", "BusinessObject\BusinessObject.csproj", "{CCF35E53-56CF-4941-A160-1B82EDBE8446}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DTOs", "DTOs\DTOs.csproj", "{ED6D6762-9090-47DF-9A67-FDCE38BCD670}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DTOs", "DTOs\DTOs.csproj", "{ED6D6762-9090-47DF-9A67-FDCE38BCD670}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
