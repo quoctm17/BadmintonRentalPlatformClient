@@ -11,27 +11,27 @@ namespace DTOs.Response.Authentication
 {
     public class LoginResponse
     {
-        public string AccessToken { get; set; }
-        public int Id { get; set; }
-        public string FullName { get; set; }
-        public string Email { get; set; }
-        public string Gender { get; set; }
-        public DateTime DateOfBirth { get; set; }
-        public string Address { get; set; }
-        public string ProfileImage { get; set; }
-        public string PhoneNumber { get; set; }
+        public string accessToken { get; set; }
+        public int id { get; set; }
+        public string fullName { get; set; }
+        public string email { get; set; }
+        public string gender { get; set; }
+        public DateTime dateOfBirth { get; set; }
+        public string address { get; set; }
+        public string profileImage { get; set; }
+        public string phoneNumber { get; set; }
         public RoleEnum Role { get; set; }
 
         public LoginResponse(int id, string fullName, string email, string gender, DateTime dateOfBirth, string address, string profileImage, string phoneNumber, RoleEnum role)
         {
-            Id = id;
-            FullName = fullName;
-            Email = email;
-            Gender = gender;
-            DateOfBirth = dateOfBirth;
-            Address = address;
-            ProfileImage = profileImage;
-            PhoneNumber = phoneNumber;
+            id = id;
+            fullName = fullName;
+            email = email;
+            gender = gender;
+            dateOfBirth = dateOfBirth;
+            address = address;
+            profileImage = profileImage;
+            phoneNumber = phoneNumber;
             Role = role;
         }
     }

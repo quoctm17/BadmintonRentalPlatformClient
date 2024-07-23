@@ -36,8 +36,10 @@ public class SignUp : PageModel
         var result = JsonSerializer.Deserialize<Result<RegisterResponse>>(responseContent);
         if (result.data != null) 
         {
-            SessionHelper.SetObjectAsJson(HttpContext.Session, "username", result.data.FullName);
-            return RedirectToPage("../Index");
+            SessionHelper.SetObjectAsJson(HttpContext.Session, "username", result.data.fullName);
+            // Return a script to set the token in sessionStorage
+            var script = $"<script>sessionStorage.setItem('user', '{result.data.fullName}'); window.location.href = '/Index';</script>";
+            return Content(script, "text/html");
         }   
         return RedirectToPage("./SignUp");
     }
