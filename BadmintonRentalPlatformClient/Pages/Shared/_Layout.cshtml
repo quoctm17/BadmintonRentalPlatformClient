@@ -170,7 +170,7 @@
                                     <li><a href="/contact">Contact</a></li>
                                 </ul>
                             </nav>
-                            <div class="nav-right">
+                            <div id="manageAuthen" class="nav-right">
                                <a href="/account/login" class="login-icon">
                                    <i class="fa fa-user"></i> Đăng Nhập
                                    </a>
@@ -258,7 +258,17 @@
             </div>
         </div>
     </footer>
-    <!-- Footer Section End -->
+    <!-- Footer Section End -->'
+    
+    <script>
+        const manageAuthen = document.getElementById('manageAuthen');
+        const username = sessionStorage.getItem('user');
+        if (username !== null) {
+            manageAuthen.innerHTML = '<a href="/account/login" class="login-icon"/>' + 
+                                        '<i class="fa fa-user"></i> Hello ' + username + 
+                                     '</a>';
+        }
+    </script>
 
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
