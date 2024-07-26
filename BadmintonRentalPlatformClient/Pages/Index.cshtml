@@ -394,3 +394,47 @@
         }
     });
 </script>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        const urlParams = new URLSearchParams(window.location.search);
+        const code = urlParams.get('code');
+        const paymentLinkId = urlParams.get('id'); // This is the PaymentLinkId
+        const status = urlParams.get('status');
+
+        console.log('URL Parameters:', { code, paymentLinkId, status });
+
+        if (code === '00' && (status === 'PAID' || status === 'CANCELLED')) {
+            console.log('Attempting to update payment status...');
+            fetch(`https://localhost:7020/api/v1/payment/update-payment-status?paymentLinkId=${paymentLinkId}&status=${status}`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                }
+            })
+                .then(response => response.json())
+                .then(data => {
+                    console.log('Data from update-payment-status:', data);
+                    if (data.statusCode === 200) {
+                        if (status === 'PAID') {
+                            alert('Payment successful! Booking confirmed.');
+                        } else if (status === 'CANCELLED') {
+                            alert('Payment was cancelled.');
+                        }
+                        // Optionally, redirect to a confirmation page or update the UI accordingly
+                    } else {
+                        alert('Error updating payment status: ' + data.message);
+                    }
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                    alert('Error: ' + error.message);
+                });
+        } else {
+            alert('Payment failed or was cancelled.');
+        }
+    });
+</script>
+
+
+

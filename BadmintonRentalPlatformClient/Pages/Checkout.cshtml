@@ -113,7 +113,7 @@
             return;
         }
 
-        const userId = userInfo.id;; // Đặt ID người dùng của bạn ở đây
+        const userId = userInfo.id;
         const userApiUrl = `https://localhost:7020/api/v1/users/${userId}`;
         const paymentApiUrl = `https://localhost:7020/api/v1/payments`;
         const cart = JSON.parse(localStorage.getItem('cart')) || [];
@@ -294,15 +294,31 @@
                         .then(data => {
                             console.log('Booking response:', data);
                             if (data.statusCode === 200) {
-                                Swal.fire({
-                                    title: 'Đã xác nhận!',
-                                    text: 'Đơn đặt sân của bạn đã được xác nhận.',
-                                    icon: 'success',
-                                    confirmButtonColor: '#dfa974'
-                                }).then(() => {
-                                    localStorage.removeItem('cart');
-                                    window.location.href = '/';
-                                });
+                                const bookingId = data.data; // Get the booking ID from the response
+                                if (parseInt(paymentId) === 1) {
+                                    Swal.fire({
+                                        title: 'Đã xác nhận!',
+                                        text: 'Đơn đặt sân của bạn đã được xác nhận.',
+                                        icon: 'success',
+                                        confirmButtonColor: '#dfa974'
+                                    }).then(() => {
+                                        localStorage.removeItem('cart');
+                                        window.location.href = '/';
+                                    });
+                                } else {
+                                    fetch(`https://localhost:7020/api/v1/payment/payment?bookingId=${bookingId}`)
+                                        .then(response => response.json())
+                                        .then(paymentData => {
+                                            if (paymentData.statusCode === 200) {
+                                                window.location.href = paymentData.data.checkoutUrl; // Use the correct property
+                                            } else {
+                                                Swal.fire('Lỗi!', 'Có lỗi xảy ra khi tạo liên kết thanh toán. Vui lòng thử lại.', 'error');
+                                            }
+                                        })
+                                        .catch(error => {
+                                            Swal.fire('Lỗi!', 'Không thể kết nối tới máy chủ thanh toán. Vui lòng thử lại sau.', 'error');
+                                        });
+                                }
                             } else {
                                 Swal.fire('Lỗi!', 'Có lỗi xảy ra khi đặt sân. Vui lòng thử lại.', 'error');
                             }
@@ -315,6 +331,7 @@
             });
         });
     });
+
 
 </script>
 
