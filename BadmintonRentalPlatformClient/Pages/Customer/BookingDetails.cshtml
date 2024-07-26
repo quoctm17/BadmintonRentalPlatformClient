@@ -90,7 +90,7 @@
             row.innerHTML = `
                 <td>${new Date().toLocaleDateString('vi-VN')}</td>
                 <td>${detail.courtEntity ? detail.courtEntity.courtCode : detail.courtId}</td>
-                <td>${detail.price.toLocaleString()} vnđ</td>
+                <td>${(detail.price / 2).toLocaleString()} vnđ</td>
             `;
             tbody.appendChild(row);
         });
