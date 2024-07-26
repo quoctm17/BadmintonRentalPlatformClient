@@ -10,10 +10,10 @@
         <div class="row">
             <div class="col-lg-12">
                 <div class="breadcrumb-text">
-                    <h2>Our Badminton Court</h2>
+                    <h2>Sân Cầu Lông Của Chúng Tôi</h2>
                     <div class="bt-option">
-                        <a href="/Index">Home</a>
-                        <span>Badminton Court</span>
+                        <a href="/Index">Trang Chủ</a>
+                        <span>Sân Cầu Lông</span>
                     </div>
                 </div>
             </div>
@@ -21,20 +21,20 @@
     </div>
 </div>
 <!-- Breadcrumb Section End -->
-<!-- Rooms Section Begin -->
+<!-- BadmintonCourt Section Begin -->
 <section class="rooms-section spad">
     <div class="container">
         <div class="row" id="badminton-court-list">
             <!-- Nội dung sẽ được JavaScript chèn vào đây -->
         </div>
         <div class="room-pagination">
-            <a href="#" id="prev-page">Previous</a>
+            <a href="#" id="prev-page">Trang Trước</a>
             <span id="pagination-info"></span>
-            <a href="#" id="next-page">Next</a>
+            <a href="#" id="next-page">Trang Sau</a>
         </div>
     </div>
 </section>
-<!-- Rooms Section End -->
+<!-- BadmintonCourt Section End -->
 
 <script>
     document.addEventListener('DOMContentLoaded', async function () {
@@ -66,7 +66,7 @@
                             if (courtsData.statusCode === 200) {
                                 const courts = courtsData.data;
 
-                                // Calculate min and max prices
+                                // Tính giá min và max
                                 let minPrice = Infinity;
                                 let maxPrice = 0;
 
@@ -79,7 +79,7 @@
                                     }
                                 });
 
-                                const priceText = minPrice !== Infinity && maxPrice !== 0 ? `${formatCurrency(minPrice)} - ${formatCurrency(maxPrice)} vnđ` : 'N/A';
+                                const priceText = minPrice !== Infinity && maxPrice !== 0 ? `${formatCurrency(minPrice / 2)} - ${formatCurrency(maxPrice / 2)} vnđ` : 'N/A';
 
                                 const firstImage = (court.courtImagePaths && court.courtImagePaths.length > 0) ? court.courtImagePaths[0] : 'img/default-court.jpg';
 
@@ -93,50 +93,50 @@
                                             <table>
                                                 <tbody>
                                                     <tr>
-                                                        <td class="r-o">Size:</td>
+                                                        <td class="r-o">Số Sân:</td>
                                                         <td>${court.courtNumber}</td>
                                                     </tr>
                                                     <tr>
-                                                        <td class="r-o">Start Time:</td>
+                                                        <td class="r-o">Giờ Mở Cửa:</td>
                                                         <td>${court.startTime}</td>
                                                     </tr>
                                                     <tr>
-                                                        <td class="r-o">End Time:</td>
+                                                        <td class="r-o">Giờ Đóng Cửa:</td>
                                                         <td>${court.endTime}</td>
                                                     </tr>
                                                     <tr>
-                                                        <td class="r-o">Address:</td>
+                                                        <td class="r-o">Địa Chỉ:</td>
                                                         <td>${court.address}</td>
                                                     </tr>
                                                     <tr>
-                                                        <td class="r-o">Rating:</td>
+                                                        <td class="r-o">Đánh Giá:</td>
                                                         <td>${court.rating}</td>
                                                     </tr>
                                                 </tbody>
                                             </table>
-                                            <a href="/BadmintonCourt/Details/${court.id}" class="primary-btn">More Details</a>
+                                            <a href="/BadmintonCourt/Details/${court.id}" class="primary-btn">Xem Chi Tiết</a>
                                         </div>
                                     </div>
                                 </div>`;
                                 courtList.innerHTML += courtHTML;
                             } else {
-                                console.error('Failed to fetch courts data: ', courtsData.message);
+                                console.error('Lấy dữ liệu sân thất bại: ', courtsData.message);
                             }
                         } catch (error) {
-                            console.error('Error fetching courts data: ', error);
+                            console.error('Lỗi khi lấy dữ liệu sân: ', error);
                         }
                     }
 
                     const paginationInfo = document.getElementById('pagination-info');
-                    paginationInfo.innerText = `Page ${pagedResult.currentPage} of ${pagedResult.totalPages}`;
+                    paginationInfo.innerText = `Trang ${pagedResult.currentPage} của ${pagedResult.totalPages}`;
 
                     document.getElementById('prev-page').style.display = pagedResult.currentPage > 1 ? 'inline' : 'none';
                     document.getElementById('next-page').style.display = pagedResult.currentPage < pagedResult.totalPages ? 'inline' : 'none';
                 } else {
-                    console.error('Failed to fetch data: ', data.message);
+                    console.error('Lấy dữ liệu thất bại: ', data.message);
                 }
             } catch (error) {
-                console.error('Error fetching data: ', error);
+                console.error('Lỗi khi lấy dữ liệu: ', error);
             }
         }
 

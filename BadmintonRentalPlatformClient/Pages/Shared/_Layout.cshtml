@@ -45,6 +45,59 @@
             .login-icon:hover {
                 color: #dfa974;
             }
+
+        #user-dropdown {
+            color: #333;
+            position: relative;
+        }
+
+            #user-dropdown .dropdown-menu {
+                display: none;
+                position: absolute;
+                top: 100%;
+                left: 0;
+                z-index: 1000;
+                float: left;
+                min-width: 160px;
+                padding: 5px 0;
+                margin: 2px 0 0;
+                font-size: 14px;
+                color: #333;
+                text-align: left;
+                list-style: none;
+                background-color: #fff;
+                background-clip: padding-box;
+                border: 1px solid rgba(0, 0, 0, .15);
+                border-radius: 4px;
+                box-shadow: 0 6px 12px rgba(0, 0, 0, .175);
+                opacity: 0;
+                visibility: hidden;
+                transition: opacity 0.3s ease, visibility 0.3s ease;
+            }
+
+            #user-dropdown.show .dropdown-menu {
+                display: block;
+                opacity: 1;
+                visibility: visible;
+            }
+
+            #user-dropdown .dropdown-item {
+                display: block;
+                width: 100%;
+                padding: 3px 20px;
+                clear: both;
+                font-weight: 400;
+                color: #333;
+                text-align: inherit;
+                white-space: nowrap;
+                background: none;
+                border: 0;
+            }
+
+                #user-dropdown .dropdown-item:hover {
+                    background-color: #f8f9fa;
+                    color: #333;
+                }
     </style>
 </head>
 <body>
@@ -68,30 +121,30 @@
         <div class="header-configure-area">
             <div class="language-option">
                 <img src="/img/flag.jpg" alt="">
-                <span>EN <i class="fa fa-angle-down"></i></span>
+                <span>VI <i class="fa fa-angle-down"></i></span>
                 <div class="flag-dropdown">
                     <ul>
-                        <li><a href="#">Zi</a></li>
-                        <li><a href="#">Fr</a></li>
+                        <li><a href="#">VI</a></li>
+                        <li><a href="#">EN</a></li>
                     </ul>
                 </div>
             </div>
-            <a href="#" class="bk-btn">Booking Now</a>
+            <a href="#" class="bk-btn">Đặt Ngay</a>
         </div>
         <nav class="mainmenu mobile-menu">
             <ul>
-                <li class="active"><a href="/index">Home</a></li>
-                <li><a href="/badmintoncourt/index">Rooms</a></li>
-                <li><a href="/aboutus">About Us</a></li>
+                <li class="active"><a href="/index">Trang Chủ</a></li>
+                <li><a href="/badmintoncourt/index">Sân Cầu Lông</a></li>
+                <li><a href="/aboutus">Về Chúng Tôi</a></li>
                 <li>
-                    <a href="./pages.html">Pages</a>
+                    <a href="./pages.html">Trang</a>
                     <ul class="dropdown">
-                        <li><a href="/badmintoncourt/details">BadmintonCourt Details</a></li>
-                        <li><a href="/blog/details">Blog Details</a></li>
+                        <li><a href="/badmintoncourt/details">Chi Tiết Sân</a></li>
+                        <li><a href="/blog/details">Chi Tiết Blog</a></li>
                     </ul>
                 </li>
-                <li><a href="/blog/index">News</a></li>
-                <li><a href="/blog/details">Contact</a></li>
+                <li><a href="/blog/index">Tin Tức</a></li>
+                <li><a href="/contact">Liên Hệ</a></li>
             </ul>
         </nav>
         <div id="mobile-menu-wrap"></div>
@@ -126,16 +179,16 @@
                                 <a href="#"><i class="fa fa-tripadvisor"></i></a>
                                 <a href="#"><i class="fa fa-instagram"></i></a>
                             </div>
-                            <a href="#" class="bk-btn">Booking Now</a>
+                            <a href="#" class="bk-btn">Đặt Ngay</a>
                             <div class="language-option">
                                 <img src="/img/flag.jpg" alt="">
                                 <span>VI <i class="fa fa-angle-down"></i></span>
-                                @*<div class="flag-dropdown">
+                                <div class="flag-dropdown">
                                     <ul>
-                                        <li><a href="#">Zi</a></li>
-                                        <li><a href="#">Fr</a></li>
+                                        <li><a href="#">VI</a></li>
+                                        <li><a href="#">EN</a></li>
                                     </ul>
-                                </div>*@
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -156,24 +209,34 @@
                         <div class="nav-menu">
                             <nav class="mainmenu">
                                 <ul>
-                                    <li class="active"><a href="/index">Home</a></li>
-                                    <li><a href="/badmintoncourt/index">Badminton Court</a></li>
-                                    <li><a href="/aboutus">About Us</a></li>
+                                    <li class="active"><a href="/index">Trang Chủ</a></li>
+                                    <li><a href="/badmintoncourt/index">Sân Cầu Lông</a></li>
+                                    <li><a href="/aboutus">Về Chúng Tôi</a></li>
                                     <li>
-                                        <a href="./pages.html">Pages</a>
+                                        <a href="./pages.html">Trang</a>
                                         <ul class="dropdown">
-                                            <li><a href="/badmintoncourt/details">BadmintonCourt Details</a></li>
-                                            <li><a href="/blog/details">Blog Details</a></li>
+                                            <li><a href="/badmintoncourt/details">Chi Tiết Sân</a></li>
+                                            <li><a href="/blog/details">Chi Tiết Blog</a></li>
                                         </ul>
                                     </li>
-                                    <li><a href="/blog/index">News</a></li>
-                                    <li><a href="/contact">Contact</a></li>
+                                    <li><a href="/blog/index">Tin Tức</a></li>
+                                    <li><a href="/contact">Liên Hệ</a></li>
                                 </ul>
                             </nav>
-                            <div id="manageAuthen" class="nav-right">
-                               <a href="/account/login" class="login-icon">
-                                   <i class="fa fa-user"></i> Đăng Nhập
-                                   </a>
+                            <div class="nav-right">
+                                <a href="/account/login" class="login-icon" id="login-link">
+                                    <i class="fa fa-user"></i> Đăng Nhập
+                                </a>
+                                <div class="dropdown" id="user-dropdown" style="display: none;">
+                                    <a href="#" class="login-icon dropdown-toggle" id="userDropdown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                        <i class="fa fa-user"></i> Xin Chào, <span id="username"></span>
+                                    </a>
+                                    <div class="dropdown-menu" aria-labelledby="userDropdown">
+                                        <a class="dropdown-item" href="/account/profile">Thông tin cá nhân</a>
+                                        <a class="dropdown-item" href="/account/bookings">Đơn đặt lịch</a>
+                                        <a class="dropdown-item" href="#" id="logout-button">Đăng Xuất</a>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -200,7 +263,7 @@
                                     <img src="img/footer-logo.png" alt="">
                                 </a>
                             </div>
-                            <p>We inspire and reach millions of travelers<br /> across 90 local websites</p>
+                            <p>Chúng tôi truyền cảm hứng và tiếp cận hàng triệu khách du lịch<br /> trên 90 trang web địa phương</p>
                             <div class="fa-social">
                                 <a href="#"><i class="fa fa-facebook"></i></a>
                                 <a href="#"><i class="fa fa-twitter"></i></a>
@@ -212,18 +275,18 @@
                     </div>
                     <div class="col-lg-3 offset-lg-1">
                         <div class="ft-contact">
-                            <h6>Contact Us</h6>
+                            <h6>Liên Hệ</h6>
                             <ul>
                                 <li>(12) 345 67890</li>
                                 <li>info.colorlib@gmail.com</li>
-                                <li>856 Cordia Extension Apt. 356, Lake, United State</li>
+                                <li>856 Cordia Extension Apt. 356, Lake, Hoa Kỳ</li>
                             </ul>
                         </div>
                     </div>
                     <div class="col-lg-3 offset-lg-1">
                         <div class="ft-newslatter">
-                            <h6>New latest</h6>
-                            <p>Get the latest updates and offers.</p>
+                            <h6>Bản Tin Mới</h6>
+                            <p>Nhận các cập nhật và ưu đãi mới nhất.</p>
                             <form action="#" class="fn-form">
                                 <input type="text" placeholder="Email">
                                 <button type="submit"><i class="fa fa-send"></i></button>
@@ -238,18 +301,18 @@
                 <div class="row">
                     <div class="col-lg-7">
                         <ul>
-                            <li><a href="#">Contact</a></li>
-                            <li><a href="#">Terms of use</a></li>
-                            <li><a href="#">Privacy</a></li>
-                            <li><a href="#">Environmental Policy</a></li>
+                            <li><a href="#">Liên Hệ</a></li>
+                            <li><a href="#">Điều Khoản Sử Dụng</a></li>
+                            <li><a href="#">Bảo Mật</a></li>
+                            <li><a href="#">Chính Sách Môi Trường</a></li>
                         </ul>
                     </div>
                     <div class="col-lg-5">
                         <div class="co-text">
                             <p>
                                 <!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. -->
-                                Copyright &copy;
-                                <script>document.write(new Date().getFullYear());</script> All rights reserved | This template is made with <i class="fa fa-heart" aria-hidden="true"></i> by <a href="https://colorlib.com" target="_blank">Colorlib</a>
+                                Bản quyền &copy;
+                                <script>document.write(new Date().getFullYear());</script> Tất cả các quyền | Mẫu này được thực hiện với <i class="fa fa-heart" aria-hidden="true"></i> bởi <a href="https://colorlib.com" target="_blank">Colorlib</a>
                                 <!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. -->
                             </p>
                         </div>
@@ -282,6 +345,53 @@
     <script src="~/js/jquery.slicknav.js"></script>
     <script src="~/js/owl.carousel.min.js"></script>
     <script src="~/js/main.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const isLogin = localStorage.getItem('isLogin');
+            const userInfo = JSON.parse(localStorage.getItem('userInfo'));
+
+            if (isLogin && userInfo) {
+                document.getElementById('login-link').style.display = 'none';
+                document.getElementById('user-dropdown').style.display = 'inline';
+                document.getElementById('username').textContent = userInfo.fullName;
+                document.getElementById('user-dropdown').style.color = '#333'; // Đảm bảo màu chữ luôn hiển thị
+            }
+
+            const userDropdown = document.getElementById('user-dropdown');
+            const dropdownMenu = userDropdown.querySelector('.dropdown-menu');
+
+            userDropdown.addEventListener('mouseover', function () {
+                userDropdown.classList.add('show');
+            });
+
+            userDropdown.addEventListener('mouseout', function () {
+                setTimeout(function () {
+                    if (!userDropdown.matches(':hover') && !dropdownMenu.matches(':hover')) {
+                        userDropdown.classList.remove('show');
+                    }
+                }, 300);
+            });
+
+            dropdownMenu.addEventListener('mouseover', function () {
+                userDropdown.classList.add('show');
+            });
+
+            dropdownMenu.addEventListener('mouseout', function () {
+                setTimeout(function () {
+                    if (!userDropdown.matches(':hover') && !dropdownMenu.matches(':hover')) {
+                        userDropdown.classList.remove('show');
+                    }
+                }, 300);
+            });
+
+            document.getElementById('logout-button').addEventListener('click', function () {
+                localStorage.removeItem('isLogin');
+                localStorage.removeItem('userInfo');
+                window.location.href = '/account/login';
+            });
+        });
+
+    </script>
 
     @await RenderSectionAsync("Scripts", required: false)
 </body>
