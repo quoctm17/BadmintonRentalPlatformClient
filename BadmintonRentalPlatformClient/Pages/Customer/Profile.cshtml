@@ -1,0 +1,186 @@
+﻿@page
+@model BadmintonRentalPlatformClient.Pages.Customer.ProfileModel
+@{
+    ViewData["Title"] = "Thông tin cá nhân";
+}
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css">
+
+<style>
+    .profile-container {
+        margin-top: 30px;
+        margin-bottom: 30px;
+    }
+
+    .form-group {
+        margin-bottom: 20px;
+    }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 5px;
+        }
+
+    .form-control {
+        width: 100%;
+        padding: 15px;
+        font-size: 16px;
+        border: 1px solid #ced4da;
+        border-radius: 4px;
+    }
+
+    .btn {
+        display: inline-block;
+        margin-right: 10px;
+        margin-top: 20px;
+    }
+
+    .select-gender {
+        padding-right: 1.5rem;
+        background-position: right 0.75rem center;
+        background-repeat: no-repeat;
+        background-size: 1rem;
+    }
+</style>
+
+<div class="container profile-container">
+    <h2>Thông tin cá nhân</h2>
+    <form id="profile-form">
+        <div class="row">
+            <div class="col-md-6 form-group">
+                <label for="fullName">Họ và tên:</label>
+                <input type="text" id="fullName" class="form-control" disabled />
+            </div>
+            <div class="col-md-6 form-group">
+                <label for="email">Email:</label>
+                <input type="email" id="email" class="form-control" disabled />
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-6 form-group">
+                <label for="gender">Giới tính:</label>
+                <select id="gender" class="form-control select-gender" disabled>
+                    <option value="Male">Nam</option>
+                    <option value="Female">Nữ</option>
+                    <option value="Other">Khác</option>
+                </select>
+            </div>
+            <div class="row">
+                <div class="col-md-6 form-group">
+                    <label for="dateOfBirth">Ngày sinh:</label>
+                    <input type="date" id="dateOfBirth" class="form-control" disabled />
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-6 form-group">
+                <label for="address">Địa chỉ:</label>
+                <input type="text" id="address" class="form-control" disabled />
+            </div>
+            <div class="col-md-6 form-group">
+                <label for="phoneNumber">Số điện thoại:</label>
+                <input type="tel" id="phoneNumber" class="form-control" disabled />
+            </div>
+        </div>
+        <button type="button" class="btn btn-primary" id="editButton">Chỉnh Sửa Thông Tin</button>
+        <button type="button" class="btn btn-success" id="updateButton" style="display:none;">Xác Nhận Cập Nhật</button>
+    </form>
+</div>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        const userInfo = JSON.parse(localStorage.getItem('userInfo'));
+        if (userInfo && userInfo.id) {
+            fetch(`https://localhost:7020/api/v1/users/${userInfo.id}`)
+                .then(response => response.json())
+                .then(data => {
+                    if (data.statusCode === 200 && data.data) {
+                        document.getElementById('fullName').value = data.data.fullName;
+                        document.getElementById('email').value = data.data.email;
+                        document.getElementById('gender').value = data.data.gender;
+                        document.getElementById('dateOfBirth').value = formatDate(data.data.dateOfBirth);
+                        document.getElementById('address').value = data.data.address;
+                        document.getElementById('phoneNumber').value = data.data.phoneNumber;
+                        // Lưu dữ liệu profileImage và password để sử dụng khi cập nhật
+                        document.getElementById('profile-form').dataset.profileImage = data.data.profileImage;
+                        document.getElementById('profile-form').dataset.password = data.data.password;
+                    } else {
+                        Swal.fire('Lỗi', 'Lỗi khi lấy thông tin người dùng: ' + data.message, 'error');
+                    }
+                })
+                .catch(error => {
+                    Swal.fire('Lỗi', 'Lỗi khi kết nối tới API: ' + error, 'error');
+                });
+        } else {
+            Swal.fire('Cảnh báo', 'Bạn cần đăng nhập để xem thông tin cá nhân.', 'warning')
+                .then(() => {
+                    window.location.href = '/account/login';  // Điều hướng đến trang đăng nhập nếu chưa đăng nhập
+                });
+        }
+
+        document.getElementById('editButton').addEventListener('click', function () {
+            enableFormInputs(true);
+            document.getElementById('editButton').style.display = 'none';
+            document.getElementById('updateButton').style.display = 'block';
+        });
+
+        document.getElementById('updateButton').addEventListener('click', function () {
+            const updatedData = {
+                id: userInfo.id,
+                fullName: document.getElementById('fullName').value,
+                email: document.getElementById('email').value,
+                gender: document.getElementById('gender').value,
+                dateOfBirth: document.getElementById('dateOfBirth').value,
+                address: document.getElementById('address').value,
+                phoneNumber: document.getElementById('phoneNumber').value,
+                password: document.getElementById('profile-form').dataset.password,
+                profileImage: document.getElementById('profile-form').dataset.profileImage
+            };
+
+            fetch(`https://localhost:7020/api/v1/users`, {
+                method: 'PUT',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(updatedData)
+            })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.statusCode === 200) {
+                        Swal.fire('Thành công', 'Cập nhật thông tin thành công', 'success');
+                        enableFormInputs(false);
+                        document.getElementById('editButton').style.display = 'block';
+                        document.getElementById('updateButton').style.display = 'none';
+                    } else {
+                        Swal.fire('Lỗi', 'Lỗi khi cập nhật thông tin người dùng: ' + data.message, 'error');
+                    }
+                })
+                .catch(error => {
+                    Swal.fire('Lỗi', 'Có lỗi xảy ra khi cập nhật thông tin: ' + error, 'error');
+                });
+        });
+
+        function enableFormInputs(enable) {
+            document.getElementById('fullName').disabled = !enable;
+            document.getElementById('email').disabled = !enable;
+            document.getElementById('gender').disabled = !enable;
+            document.getElementById('dateOfBirth').disabled = !enable;
+            document.getElementById('address').disabled = !enable;
+            document.getElementById('phoneNumber').disabled = !enable;
+        }
+
+        function formatDate(dateString) {
+            const date = new Date(dateString);
+            const day = String(date.getDate()).padStart(2, '0');
+            const month = String(date.getMonth() + 1).padStart(2, '0');
+            const year = date.getFullYear();
+            return `${year}-${month}-${day}`; // Định dạng lại thành YYYY-MM-DD để phù hợp với input type="date"
+        }
+    });
+
+
+</script>
+
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+
+

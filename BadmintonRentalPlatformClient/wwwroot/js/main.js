@@ -101,9 +101,5 @@
         dateFormat: 'dd MM, yy'
     });
 
-    /*------------------
-		Nice Select
-	--------------------*/
-    $("select").niceSelect();
 
 })(jQuery);
