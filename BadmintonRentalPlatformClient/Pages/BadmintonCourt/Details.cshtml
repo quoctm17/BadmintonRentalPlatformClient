@@ -1,7 +1,7 @@
 ﻿@page "/BadmintonCourt/Details/{id:int}"
 @model BadmintonRentalPlatformClient.Pages.BadmintonCourt.DetailsModel
 @{
-    ViewData["Title"] = "Badminton Court Details";
+    ViewData["Title"] = "Chi Tiết Sân Cầu Lông";
 }
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/assets/owl.carousel.min.css" integrity="sha512-utbXk9e3p+d/2OVOZWUioe5D8yZT6gF9DHCB8PSTVsChEStUslYMy3/J35h6snOBP+4+a0oI8h/lzfqTw5V5NQ==" crossorigin="anonymous" referrerpolicy="no-referrer" />
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/assets/owl.theme.default.min.css" integrity="sha512-2M3k1L6OwCGQZrS/y8nlD72omwxRS2TL/lpTmBsGTuTjD9sSnzHUpJ/5wFgfnx7F4N6ZCokyMnxZy+ub/IDpDA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
@@ -34,6 +34,12 @@
 
         .date-item div {
             display: block; /* Hiển thị thứ và ngày trên cùng một hàng */
+        }
+
+        .date-item.disabled {
+            color: #ccc;
+            cursor: not-allowed;
+            pointer-events: none;
         }
 
         .date-item:hover,
@@ -103,7 +109,6 @@
         .status-item .cancelled {
             background-color: gray;
         }
-
 
     .cart-icon {
         position: fixed;
@@ -338,6 +343,7 @@
             color: white;
             border-color: #dfa974;
         }
+
         .timeslot.booked {
             background-color: #ccc;
             cursor: not-allowed;
@@ -358,10 +364,10 @@
         <div class="row">
             <div class="col-lg-12">
                 <div class="breadcrumb-text">
-                    <h2 id="court-name">Court Name</h2>
+                    <h2 id="court-name">Tên Sân</h2>
                     <div class="bt-option">
-                        <a href="/Index">Home</a>
-                        <span>Courts</span>
+                        <a href="/Index">Trang Chủ</a>
+                        <span>Sân</span>
                     </div>
                 </div>
             </div>
@@ -378,17 +384,17 @@
                     <div class="row">
                         <div class="col-lg-8">
                             <div class="court-slider owl-carousel" id="court-image-slider">
-                                <!-- Images will be inserted here -->
+                                <!-- Hình ảnh sẽ được chèn vào đây -->
                             </div>
                         </div>
                         <div class="col-lg-4">
                             <div class="court-info">
-                                <h3 id="court-name-title">Court Name</h3>
-                                <p id="court-description">Description</p>
-                                <p id="court-address">Address</p>
-                                <h4 id="court-price">Price per Slot</h4>
+                                <h3 id="court-name-title">Tên Sân</h3>
+                                <p id="court-description">Mô Tả</p>
+                                <p id="court-address">Địa Chỉ</p>
+                                <h4 id="court-price">Giá mỗi Slot</h4>
                                 <div class="rating" id="court-rating">
-                                    <!-- Ratings will be inserted here -->
+                                    <!-- Đánh giá sẽ được chèn vào đây -->
                                 </div>
                             </div>
                         </div>
@@ -397,7 +403,7 @@
                     <div class="date-picker-container">
                         <button class="prev-day"><</button>
                         <div class="date-list">
-                            <!-- Days will be dynamically inserted here -->
+                            <!-- Các ngày sẽ được chèn vào đây -->
                         </div>
                         <button class="next-day">></button>
                     </div>
@@ -420,7 +426,7 @@
                     <!-- Status Bar Section End -->
 
                     <div class="court-slots" id="court-slots">
-                        <!-- Court slots will be inserted here -->
+                        <!-- Các slot sân sẽ được chèn vào đây -->
                     </div>
                 </div>
             </div>
@@ -486,13 +492,19 @@ document.addEventListener('DOMContentLoaded', function () {
         <div>${date.getDate()}/${date.getMonth() + 1}</div>
     `;
         dateItem.dataset.date = date.toDateString();
-        dateItem.addEventListener('click', function () {
-            document.querySelectorAll('.date-item').forEach(item => item.classList.remove('selected'));
-            dateItem.classList.add('selected');
-            selectedDate = new Date(dateItem.dataset.date);
-            updateSelectedDate(selectedDate); // Cập nhật ngày đã chọn
-            fetchCourtsAndUpdateSlots(); // Cập nhật danh sách slot
-        });
+
+        // Disable past dates
+        if (date < new Date(today.toDateString())) {
+            dateItem.classList.add('disabled');
+        } else {
+            dateItem.addEventListener('click', function () {
+                document.querySelectorAll('.date-item').forEach(item => item.classList.remove('selected'));
+                dateItem.classList.add('selected');
+                selectedDate = new Date(dateItem.dataset.date);
+                updateSelectedDate(selectedDate); // Cập nhật ngày đã chọn
+                fetchCourtsAndUpdateSlots(); // Cập nhật danh sách slot
+            });
+        }
 
         return dateItem;
     }
@@ -511,17 +523,24 @@ document.addEventListener('DOMContentLoaded', function () {
     }
 
     function updateSelectedDate(date) {
-        console.log('Selected date:', date.toDateString());
+        console.log('Ngày đã chọn:', date.toDateString());
         selectedDate = date;
     }
+
     prevDayButton.addEventListener('click', function () {
-        selectedDate.setDate(selectedDate.getDate() - 1);
-        updateDateList(selectedDate);
-        fetchCourtsAndUpdateSlots();
+        const newDate = new Date(selectedDate);
+        newDate.setDate(newDate.getDate() - 1);
+        if (newDate >= new Date(today.toDateString())) {
+            selectedDate = newDate;
+            updateDateList(selectedDate);
+            fetchCourtsAndUpdateSlots();
+        }
     });
 
     nextDayButton.addEventListener('click', function () {
-        selectedDate.setDate(selectedDate.getDate() + 1);
+        const newDate = new Date(selectedDate);
+        newDate.setDate(newDate.getDate() + 1);
+        selectedDate = newDate;
         updateDateList(selectedDate);
         fetchCourtsAndUpdateSlots();
     });
@@ -541,7 +560,7 @@ document.addEventListener('DOMContentLoaded', function () {
                 document.getElementById('court-address').innerText = badmintonCourt.address;
 
                 const ratingContainer = document.getElementById('court-rating');
-                ratingContainer.innerHTML = ''; // Clear previous ratings
+                ratingContainer.innerHTML = ''; // Xóa các đánh giá trước
                 for (let i = 0; i < 5; i++) {
                     const star = document.createElement('i');
                     if (i < Math.floor(badmintonCourt.rating)) {
@@ -554,7 +573,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
                 // Hiển thị hình ảnh trong slider
                 const courtImageSlider = document.getElementById('court-image-slider');
-                courtImageSlider.innerHTML = ''; // Clear previous images
+                courtImageSlider.innerHTML = ''; // Xóa các hình ảnh trước
                 badmintonCourt.courtImagePaths.forEach(imagePath => {
                     const imageSlide = document.createElement('div');
                     imageSlide.classList.add('slide');
@@ -575,16 +594,16 @@ document.addEventListener('DOMContentLoaded', function () {
                     navText: ["<i class='fa fa-chevron-left'></i>", "<i class='fa fa-chevron-right'></i>"]
                 });
 
-                // Save startTime and endTime for generating time slots
+                // Lưu startTime và endTime để tạo các slot thời gian
                 window.startTime = badmintonCourt.startTime;
                 window.endTime = badmintonCourt.endTime;
 
                 fetchCourtsAndUpdateSlots();
             } else {
-                console.error('Failed to fetch data: ', courtData.message);
+                console.error('Lấy dữ liệu thất bại: ', courtData.message);
             }
         } catch (error) {
-            console.error('Error fetching court data: ', error);
+            console.error('Lỗi khi lấy dữ liệu sân: ', error);
         }
     }
 
@@ -595,7 +614,7 @@ document.addEventListener('DOMContentLoaded', function () {
             if (courtsData.statusCode === 200) {
                 const courts = courtsData.data;
                 const courtSlotsContainer = document.getElementById('court-slots');
-                courtSlotsContainer.innerHTML = ''; // Clear previous slots
+                courtSlotsContainer.innerHTML = ''; // Xóa các slot trước
 
                 let minPrice = Infinity;
                 let maxPrice = 0;
@@ -604,7 +623,7 @@ document.addEventListener('DOMContentLoaded', function () {
                 const bookedSlots = await fetchBookedSlots(selectedDate, courtId);
 
                 courts.forEach(courtItem => {
-                    // Calculate min and max prices
+                    // Tính giá min và max
                     if (courtItem.price < minPrice) {
                         minPrice = courtItem.price;
                     }
@@ -612,18 +631,18 @@ document.addEventListener('DOMContentLoaded', function () {
                         maxPrice = courtItem.price;
                     }
 
-                    // Generate Time Slots
+                    // Tạo các slot thời gian
                     const timeSlots = generateTimeSlots(window.startTime, window.endTime);
 
-                    // Add court details
+                    // Thêm thông tin sân
                     const courtSlot = document.createElement('div');
                     courtSlot.classList.add('court-slot');
                     courtSlot.innerHTML = `
                     <img src="${courtItem.courtImage}" alt="${courtItem.courtCode}">
                     <div class="court-slot-content">
                         <h4>${courtItem.courtCode}</h4>
-                        <p>Price: ${formatCurrency(courtItem.price)} vnđ</p>
-                        <p>Type: ${courtItem.typeOfCourtName || 'N/A'}</p>
+                        <p>Giá: ${formatCurrency(courtItem.price / 2)} vnđ</p>
+                        <p>Loại sân: ${courtItem.typeOfCourtName || 'N/A'}</p>
                         <div class="timeslot-container">
                             ${timeSlots.map(slot => {
                         const [hour, minute] = slot.split(':');
@@ -634,23 +653,22 @@ document.addEventListener('DOMContentLoaded', function () {
                     }).join('')}
                         </div>
                     </div>
-                `;
+                    `;
                     courtSlotsContainer.appendChild(courtSlot);
                 });
 
-                // Update Badminton Court Price Range
+                // Cập nhật khoảng giá sân
                 if (minPrice !== Infinity && maxPrice !== 0) {
-                    document.getElementById('court-price').innerText = `Price: ${formatCurrency(minPrice)} - ${formatCurrency(maxPrice)} vnđ`;
+                    document.getElementById('court-price').innerText = `Giá: ${formatCurrency(minPrice / 2)} - ${formatCurrency(maxPrice / 2)} vnđ`;
                 } else {
-                    document.getElementById('court-price').innerText = `Price: N/A`;
+                    document.getElementById('court-price').innerText = `Giá: N/A`;
                 }
 
-                // Add event listeners for timeslot selection
+                // Thêm sự kiện cho các slot thời gian
                 document.querySelectorAll('.timeslot').forEach(slot => {
                     if (!slot.classList.contains('booked')) {
                         slot.addEventListener('click', function () {
                             const courtCode = this.closest('.court-slot').querySelector('h4').innerText;
-                            // Thêm vào các thuộc tính cần thiết
                             const selectedTimeSlot = {
                                 date: selectedDate.toLocaleDateString(),
                                 courtName: badmintonCourt.courtName,
@@ -658,9 +676,8 @@ document.addEventListener('DOMContentLoaded', function () {
                                 courtId: courts.find(court => court.courtCode === courtCode).id,
                                 badmintonCourtId: badmintonCourt.id,
                                 timeSlot: this.innerText,
-                                price: courts.find(court => court.courtCode === courtCode).price
+                                price: courts.find(court => court.courtCode === courtCode).price / 2
                             };
-
 
                             if (this.classList.contains('selected')) {
                                 this.classList.remove('selected');
@@ -679,13 +696,12 @@ document.addEventListener('DOMContentLoaded', function () {
 
                 highlightSelectedSlots();
             } else {
-                console.error('Failed to fetch courts data: ', courtsData.message);
+                console.error('Lấy dữ liệu sân thất bại: ', courtsData.message);
             }
         } catch (error) {
-            console.error('Error fetching courts data: ', error);
+            console.error('Lỗi khi lấy dữ liệu sân: ', error);
         }
     }
-
 
     function generateTimeSlots(startTime, endTime) {
         if (!startTime || !endTime) return [];
@@ -699,7 +715,7 @@ document.addEventListener('DOMContentLoaded', function () {
         start.setHours(startHour, startMinute, 0);
         end.setHours(endHour, endMinute, 0);
 
-        const slotDuration = 30 * 60 * 1000; // 30 minutes in milliseconds
+        const slotDuration = 30 * 60 * 1000; // 30 phút tính bằng mili giây
 
         while ((end - start) > slotDuration) {
             slots.push(start.toTimeString().substr(0, 5));
@@ -723,7 +739,6 @@ document.addEventListener('DOMContentLoaded', function () {
             });
         });
     }
-
 
     function formatCurrency(value) {
         return value.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
@@ -749,10 +764,10 @@ document.addEventListener('DOMContentLoaded', function () {
             <p>Tên Sân: ${item.courtName}</p>
             <p>Mã Sân: ${item.courtCode}</p>
             <p>Giờ: ${item.timeSlot} <i class="fa fa-minus remove-item-icon" data-index="${index}"></i></p>
-        `;
+            `;
             cartItemsContainer.appendChild(itemEl);
 
-            totalMinutes += 30; // Each time slot is 30 minutes
+            totalMinutes += 30; // Mỗi slot là 30 phút
             totalPrice += item.price;
         });
 
@@ -763,7 +778,6 @@ document.addEventListener('DOMContentLoaded', function () {
         localStorage.setItem('cart', JSON.stringify(cart));
     }
 
-
     function formatDate(dateString) {
         const date = new Date(dateString);
         const day = date.getDate().toString().padStart(2, '0');
@@ -771,7 +785,6 @@ document.addEventListener('DOMContentLoaded', function () {
         const year = date.getFullYear();
         return `${day}/${month}/${year}`;
     }
-
 
     function toggleCartPopup() {
         if (cartPopup.style.display === 'block') {
@@ -807,8 +820,6 @@ document.addEventListener('DOMContentLoaded', function () {
         });
     }
 
-
-
     function removeTimeSlot(index) {
         const removedItem = cart.splice(index, 1)[0];
         document.querySelectorAll('.timeslot').forEach(slot => {
@@ -821,7 +832,6 @@ document.addEventListener('DOMContentLoaded', function () {
         updateCart();
         showNotification('Đã xóa TimeSlot khỏi giỏ hàng.');
     }
-
 
     cartIcon.addEventListener('click', toggleCartPopup);
 
@@ -884,8 +894,6 @@ document.addEventListener('DOMContentLoaded', function () {
         });
     });
 
-
     fetchData();
 });
-
 </script>
