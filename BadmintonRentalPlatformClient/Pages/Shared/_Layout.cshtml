@@ -20,11 +20,13 @@
     <link rel="stylesheet" href="~/css/elegant-icons.css" type="text/css">
     <link rel="stylesheet" href="~/css/flaticon.css" type="text/css">
     <link rel="stylesheet" href="~/css/owl.carousel.min.css" type="text/css">
-    <link rel="stylesheet" href="~/css/nice-select.css" type="text/css">
     <link rel="stylesheet" href="~/css/jquery-ui.min.css" type="text/css">
     <link rel="stylesheet" href="~/css/magnific-popup.css" type="text/css">
     <link rel="stylesheet" href="~/css/slicknav.min.css" type="text/css">
     <link rel="stylesheet" href="~/css/style.css" type="text/css">
+    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.11.5/css/jquery.dataTables.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css">
+
     <style>
         .nav-right {
             display: flex;
@@ -212,13 +214,6 @@
                                     <li class="active"><a href="/index">Trang Chủ</a></li>
                                     <li><a href="/badmintoncourt/index">Sân Cầu Lông</a></li>
                                     <li><a href="/aboutus">Về Chúng Tôi</a></li>
-                                    <li>
-                                        <a href="./pages.html">Trang</a>
-                                        <ul class="dropdown">
-                                            <li><a href="/badmintoncourt/details">Chi Tiết Sân</a></li>
-                                            <li><a href="/blog/details">Chi Tiết Blog</a></li>
-                                        </ul>
-                                    </li>
                                     <li><a href="/blog/index">Tin Tức</a></li>
                                     <li><a href="/contact">Liên Hệ</a></li>
                                 </ul>
@@ -232,8 +227,8 @@
                                         <i class="fa fa-user"></i> Xin Chào, <span id="username"></span>
                                     </a>
                                     <div class="dropdown-menu" aria-labelledby="userDropdown">
-                                        <a class="dropdown-item" href="/account/profile">Thông tin cá nhân</a>
-                                        <a class="dropdown-item" href="/account/bookings">Đơn đặt lịch</a>
+                                        <a class="dropdown-item" href="/Customer/Profile">Thông tin cá nhân</a>
+                                        <a class="dropdown-item" href="/Customer/BookingsHistory">Đơn đặt lịch</a>
                                         <a class="dropdown-item" href="#" id="logout-button">Đăng Xuất</a>
                                     </div>
                                 </div>
@@ -260,7 +255,7 @@
                         <div class="ft-about">
                             <div class="logo">
                                 <a href="#">
-                                    <img src="img/footer-logo.png" alt="">
+                                    <img src="~/img/footer-logo.png" alt="">
                                 </a>
                             </div>
                             <p>Chúng tôi truyền cảm hứng và tiếp cận hàng triệu khách du lịch<br /> trên 90 trang web địa phương</p>
@@ -322,29 +317,32 @@
         </div>
     </footer>
     <!-- Footer Section End -->'
-    
+
     <script>
         const manageAuthen = document.getElementById('manageAuthen');
         const username = sessionStorage.getItem('user');
         if (username !== null) {
-            manageAuthen.innerHTML = '<a href="/account/login" class="login-icon"/>' + 
-                                        '<i class="fa fa-user"></i> Hello ' + username + 
-                                     '</a>';
+            manageAuthen.innerHTML = '<a href="/account/login" class="login-icon"/>' +
+                '<i class="fa fa-user"></i> Hello ' + username +
+                '</a>';
         }
     </script>
 
-    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js" referrerpolicy="no-referrer"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
     <script src="~/js/site.js" asp-append-version="true"></script>
     <!-- Js Plugins -->
-    <script src="~/js/jquery-3.3.1.min.js"></script>
     <script src="~/js/bootstrap.min.js"></script>
     <script src="~/js/jquery.magnific-popup.min.js"></script>
-    <script src="~/js/jquery.nice-select.min.js"></script>
     <script src="~/js/jquery-ui.min.js"></script>
     <script src="~/js/jquery.slicknav.js"></script>
     <script src="~/js/owl.carousel.min.js"></script>
     <script src="~/js/main.js"></script>
+    <script type="text/javascript" charset="utf8" src="https://code.jquery.com/jquery-3.5.1.js"></script>
+    <script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.11.5/js/jquery.dataTables.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.all.min.js"></script>
+
+
     <script>
         document.addEventListener('DOMContentLoaded', function () {
             const isLogin = localStorage.getItem('isLogin');

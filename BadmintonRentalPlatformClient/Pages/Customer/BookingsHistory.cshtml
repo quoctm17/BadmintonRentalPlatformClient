@@ -1,0 +1,249 @@
+﻿@page
+@model BookingsHistoryModel
+@{
+    ViewData["Title"] = "Lịch sử đặt sân";
+}
+
+
+<style>
+    .action-button {
+        padding: 10px 20px;
+        border-radius: 5px;
+        color: white;
+        font-size: 14px;
+        cursor: pointer;
+        margin-right: 5px;
+        transition: background-color 0.3s ease;
+        border: none;
+    }
+
+    .details-button {
+        background-color: #4CAF50;
+    }
+
+        .details-button:hover {
+            background-color: #45a049;
+        }
+
+    .cancel-button {
+        background-color: #f44336;
+    }
+
+        .cancel-button:hover {
+            background-color: #e53935;
+        }
+
+    .table-wrapper {
+        width: 100%;
+        overflow-x: auto;
+    }
+
+    table {
+        width: 100%;
+        border-collapse: collapse;
+        margin: 0 auto;
+    }
+
+    th, td {
+        text-align: left;
+        padding: 10px;
+    }
+
+    th {
+        cursor: pointer;
+        background-color: #f2f2f2;
+    }
+
+    tr:nth-child(even) {
+        background-color: #f9f9f9;
+    }
+
+    th, td {
+        border: 1px solid #ddd;
+    }
+
+    .container {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .center-text {
+        text-align: center;
+    }
+
+    /* CSS cho trạng thái đặt */
+    .status {
+        display: inline-block;
+        padding: 5px 10px;
+        border-radius: 5px;
+        color: white;
+        font-weight: bold;
+    }
+
+    .status-paying {
+        background-color: #FFA500; /* Màu cam */
+    }
+
+    .status-booked {
+        background-color: #4CAF50; /* Màu xanh lá */
+    }
+
+    .status-used {
+        background-color: #2196F3; /* Màu xanh dương */
+    }
+
+    .status-expired {
+        background-color: #9E9E9E; /* Màu xám */
+    }
+
+    .status-cancelled {
+        background-color: #f44336; /* Màu đỏ */
+    }
+</style>
+
+
+<div class="container">
+    <h2 class="center-text">Lịch sử đặt sân</h2>
+    <div class="table-wrapper">
+        <table id="bookings-table" class="display">
+            <thead>
+                <tr>
+                    <th>Ngày đặt</th>
+                    <th>Trạng thái đặt</th>
+                    <th>Tổng tiền</th>
+                    <th>Phương thức thanh toán</th>
+                    <th>Ghi chú</th>
+                    <th>Hành động</th>
+                </tr>
+            </thead>
+            <tbody>
+                <!-- Nội dung sẽ được JavaScript chèn vào đây -->
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<script>
+    let bookings = []; // Define bookings array to avoid ReferenceError
+
+    function renderBookingTable(bookings) {
+        const tbody = document.querySelector('#bookings-table tbody');
+        tbody.innerHTML = '';
+
+        bookings.forEach(booking => {
+            const statusClass = getStatusClass(booking.bookingStatus);
+            const paymentMethod = booking.transactions && booking.transactions.length > 0 ? translatePaymentMethod(booking.transactions[0].payment.paymentMethod) : 'N/A';
+            const row = document.createElement('tr');
+            row.innerHTML = `
+                <td>${new Date(booking.createAt).toLocaleDateString('vi-VN')}</td>
+                <td><span class="status ${statusClass}">${booking.bookingStatus}</span></td>
+                <td>${booking.totalPrice.toLocaleString()} vnđ</td>
+                <td>${paymentMethod}</td>
+                <td>${booking.notes}</td>
+                <td>
+                    <a href="/Customer/BookingDetails/${booking.id}" class="action-button details-button">Chi Tiết</a>
+                    <button class="action-button cancel-button" onclick="cancelBooking(${booking.id})">Hủy</button>
+                </td>
+            `;
+            tbody.appendChild(row);
+        });
+
+        // Initialize DataTables
+        $('#bookings-table').DataTable();
+    }
+
+    document.addEventListener('DOMContentLoaded', function () {
+        fetchBookings();
+    });
+
+    async function fetchBookings() {
+        const userId = JSON.parse(localStorage.getItem('userInfo')).id;
+        const apiUrl = `https://localhost:7020/api/v1/get-all-bookings-of-user?userId=${userId}`;
+
+        try {
+            const response = await fetch(apiUrl);
+            const data = await response.json();
+            if (data.statusCode === 200) {
+                bookings = data.data.map(booking => ({
+                    ...booking,
+                    bookingStatus: translateBookingStatus(booking.bookingStatus)
+                }));
+                renderBookingTable(bookings);
+            } else {
+                console.error('Failed to fetch bookings: ', data.message);
+            }
+        } catch (error) {
+            console.error('Error fetching bookings: ', error);
+        }
+    }
+
+    function translateBookingStatus(status) {
+        switch (status) {
+            case 'PAYING': return 'Đang thanh toán';
+            case 'BOOKED': return 'Đã đặt';
+            case 'USED': return 'Đã sử dụng';
+            case 'EXPIRED': return 'Đã hết hạn';
+            case 'CANCELLED': return 'Đã hủy';
+            default: return status;
+        }
+    }
+
+    function translatePaymentMethod(method) {
+        switch (method) {
+            case 'Cash': return 'Tiền mặt';
+            case 'Bank Transfer': return 'Chuyển khoản';
+            default: return method;
+        }
+    }
+
+    function getStatusClass(status) {
+        switch (status) {
+            case 'Đang thanh toán': return 'status-paying';
+            case 'Đã đặt': return 'status-booked';
+            case 'Đã sử dụng': return 'status-used';
+            case 'Đã hết hạn': return 'status-expired';
+            case 'Đã hủy': return 'status-cancelled';
+            default: return '';
+        }
+    }
+
+    function viewDetails(bookingId) {
+        window.location.href = `/Customer/BookingDetails/${bookingId}`;
+    }
+
+    function cancelBooking(bookingId) {
+        const apiUrl = `https://localhost:7020/api/v1/cancel-booking/${bookingId}`;
+        fetch(apiUrl, { method: 'POST' })
+            .then(response => response.json())
+            .then(data => {
+                if (data.statusCode === 200) {
+                    Swal.fire({
+                        icon: 'success',
+                        title: 'Thành công',
+                        text: 'Đơn đặt đã được hủy thành công.',
+                    }).then(() => {
+                        location.reload();
+                    });
+                } else {
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Lỗi',
+                        text: 'Không thể hủy đơn đặt.',
+                    });
+                }
+            })
+            .catch(error => {
+                console.error('Error cancelling booking: ', error);
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Lỗi',
+                    text: 'Không thể hủy đơn đặt.',
+                });
+            });
+    }
+</script>
+
+
+
+

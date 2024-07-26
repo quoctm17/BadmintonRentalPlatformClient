@@ -1,0 +1,102 @@
+﻿@page "/Customer/BookingDetails/{bookingReservationId:int}"
+@model BookingDetailsModel
+@{
+    ViewData["Title"] = "Chi Tiết Đơn Đặt Sân";
+}
+
+<style>
+    .table-container {
+        width: 80%; /* Set width to 80% of the parent container */
+        margin: 0 auto; /* Center the container */
+        overflow-x: auto;
+    }
+
+    table {
+        width: 100%; /* Set width to 100% of the table-container */
+        border-collapse: collapse;
+        margin: 20px auto;
+    }
+
+    th, td {
+        text-align: left;
+        padding: 10px;
+    }
+
+    th {
+        background-color: #f2f2f2;
+    }
+
+    tr:nth-child(even) {
+        background-color: #f9f9f9;
+    }
+
+    th, td {
+        border: 1px solid #ddd;
+    }
+
+    .center-text {
+        text-align: center;
+    }
+</style>
+
+
+<h2 class="center-text">Chi Tiết Đơn Đặt Sân</h2>
+
+<div class="table-container">
+    <table id="booking-details-table" class="display">
+        <thead>
+            <tr>
+                <th>Ngày đặt</th>
+                <th>Mã sân</th>
+                <th>Giá</th>
+            </tr>
+        </thead>
+        <tbody>
+            <!-- Nội dung sẽ được JavaScript chèn vào đây -->
+        </tbody>
+    </table>
+</div>
+
+
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        fetchBookingDetails();
+    });
+
+    async function fetchBookingDetails() {
+        const bookingReservationId = @Model.BookingReservationId;
+        const apiUrl = `https://localhost:7020/api/v1/BookingDetails/by-reservation/${bookingReservationId}`;
+
+        try {
+            const response = await fetch(apiUrl);
+            const data = await response.json();
+            if (data.statusCode === 200) {
+                const bookingDetails = data.data;
+                renderBookingDetailsTable(bookingDetails);
+            } else {
+                console.error('Failed to fetch booking details: ', data.message);
+            }
+        } catch (error) {
+            console.error('Error fetching booking details: ', error);
+        }
+    }
+
+    function renderBookingDetailsTable(bookingDetails) {
+        const tbody = document.querySelector('#booking-details-table tbody');
+        tbody.innerHTML = '';
+
+        bookingDetails.forEach(detail => {
+            const row = document.createElement('tr');
+            row.innerHTML = `
+                <td>${new Date().toLocaleDateString('vi-VN')}</td>
+                <td>${detail.courtEntity ? detail.courtEntity.courtCode : detail.courtId}</td>
+                <td>${detail.price.toLocaleString()} vnđ</td>
+            `;
+            tbody.appendChild(row);
+        });
+
+        // Initialize DataTables
+        $('#booking-details-table').DataTable();
+    }
+</script>
+
