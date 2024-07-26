@@ -16,6 +16,5 @@ namespace BadmintonRentalPlatformClient.Pages.Account
         public string Email { get; set; }
         [BindProperty]
         public string Password { get; set; }
-        
     }
 }
